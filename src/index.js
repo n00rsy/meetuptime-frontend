@@ -1,12 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+
+import CreatePage from './createPage/createPage'
+import ViewPage from './viewPage/viewPage'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+    <Switch>
+          <Route exact path="/">
+            <CreatePage />
+          </Route>
+          <Route path="/about">
+            <p>ABOUT PAGE</p>
+          </Route>
+          <Route path="/howto">
+            <p>HOW TO</p>
+          </Route>
+          <Route>
+            <ViewPage/>
+          </Route>
+        </Switch>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

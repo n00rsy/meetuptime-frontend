@@ -2,37 +2,30 @@ import React from 'react';
 import DayPicker, { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
-export default class Calendar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDayClick = this.handleDayClick.bind(this);
-    this.state = {
-      selectedDays: [],
-    };
-  }
+export default function Calendar({selectedDates, setselectedDates}) {
 
-  handleDayClick(day, { selected }) {
-    const { selectedDays } = this.state;
+
+  function handleDayClick(day, { selected }) {
+      let newselectedDates = [...selectedDates]
     if (selected) {
-      const selectedIndex = selectedDays.findIndex(selectedDay =>
+      const selectedIndex = newselectedDates.findIndex(selectedDay =>
         DateUtils.isSameDay(selectedDay, day)
       );
-      selectedDays.splice(selectedIndex, 1);
-    } else {
-      selectedDays.push(day);
+      newselectedDates.splice(selectedIndex, 1);
+    } 
+    else {
+        newselectedDates.push(day);
     }
-    console.log(selectedDays)
-    this.setState({ selectedDays });
+    setselectedDates(newselectedDates)
   }
 
-  render() {
     return (
       <div>
         <DayPicker
-          selectedDays={this.state.selectedDays}
-          onDayClick={this.handleDayClick}
+          selectedDays={selectedDates}
+          onDayClick={handleDayClick}
         />
       </div>
     );
-  }
+  
 }
