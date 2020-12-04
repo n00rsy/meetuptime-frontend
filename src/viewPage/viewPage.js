@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 
 import SigninForm from './signinForm'
+import AvailabilityTable from './available'
 
 export default function ViewPage() {
 
@@ -11,7 +12,6 @@ export default function ViewPage() {
 
     const location = useLocation()
     const history = useHistory()
-
     function handlePath() {
         console.log("handling path!!!")
         let path = location.pathname
@@ -23,7 +23,7 @@ export default function ViewPage() {
                 },
             })
                 .then(res => {
-                    console.log(res)
+                    console.log('raw server response: ', res)
                     return res.status === 404 ? null : res.json()
                 })
                 .then(data => {
@@ -31,6 +31,8 @@ export default function ViewPage() {
                         setFetchErr(true)
                     }
                     else {
+                        if(data.days.length == 0) data.days = [...data.dates]
+                        console.log("processed data: ", data)
                         setMeetingData(data)
                     }
                 })
@@ -59,7 +61,8 @@ export default function ViewPage() {
         <div>
             <h1>{meetingData.name}</h1>
             <h2>{meetingData.description}</h2>
-            <SigninForm signedIn={signedIn} setSignedIn={setSignedIn}/>
+            {!signedIn && <SigninForm signedIn={signedIn} setSignedIn={setSignedIn} meetingData={meetingData}/>}
+            <AvailabilityTable meetingData={meetingData}/>
         </div>
     )
 

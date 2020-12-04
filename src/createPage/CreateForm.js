@@ -14,7 +14,7 @@ export default function CreateForm() {
     const [selectedDates, setselectedDates] = useState([])
     const [selectedDays, setSelectedDays] = useState([])
 
-    const { register, handleSubmit } = useForm({
+    const { register, errors, handleSubmit } = useForm({
         defaultValues: {
             timezone: Moment.tz.guess(),
             startTime: "9",
@@ -24,15 +24,23 @@ export default function CreateForm() {
     })
 
     let history = useHistory()
-    
+
     const onSubmit = function (data) {
-        if (data.surveyUsing === "Dates") {
+        data.startTime = parseInt(data.startTime)
+        data.endTime = parseInt(data.endTime)
+        console.log(data)
+        if(data.startTime >= data.endTime) {
+            alert("Start time must be before end time!")
+        }
+
+        else if (data.surveyUsing === "Dates") {
             if (selectedDates.length === 0) {
                 // handle empty days
                 alert("Please select at least one date.")
             }
             else {
                 data.dates = selectedDates
+                data.days = []
                 sendMeeting(data)
             }
         }
@@ -43,6 +51,7 @@ export default function CreateForm() {
             }
             else {
                 data.days = selectedDays
+                data.dates = []
                 sendMeeting(data)
             }
         }
@@ -80,11 +89,11 @@ export default function CreateForm() {
         if (showCal) return <Calendar selectedDates={selectedDates} setselectedDates={setselectedDates} />
         return <Week selectedDays={selectedDays} setSelectedDays={setSelectedDays} />
     }
-
+    console.log(errors)
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <input type="text" placeholder="Event Name" name="name" ref={register({ required: true, maxLength: 100 })} />
-            <input type="text" placeholder="Description (optional)" name="description" ref={register({ maxLength: 100 })} />
+            <input type="text" placeholder="Event Name" name="name" ref={register({ required: true, minLength:1, maxLength: 100 })} />
+            <input type="text" placeholder="Description (optional)" name="description" ref={register({ maxLength: 200 })} />
 
             <div onChange={onChange}>
                 <input name="surveyUsing" type="radio" value="Dates" ref={register({ required: true })} /> Dates
