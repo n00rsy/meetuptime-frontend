@@ -38,6 +38,9 @@ export default function CreateForm() {
                 // handle empty days
                 alert("Please select at least one date.")
             }
+            else if (selectedDates.length > 7) {
+                alert("You may only selct up to 7 dates.")
+            }
             else {
                 data.dates = selectedDates
                 data.days = []

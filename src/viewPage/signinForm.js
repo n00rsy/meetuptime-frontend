@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
 
-export default function SigninForm({ signedIn, setSignedIn, meetingData }) {
+export default function SigninForm({ setSignedIn, meetingData, setUserAvailable }) {
 
     const { register, handleSubmit } = useForm()
 
@@ -9,12 +9,9 @@ export default function SigninForm({ signedIn, setSignedIn, meetingData }) {
 
         let count = Math.max(meetingData.days.length, meetingData.dates.length)
         let hours = meetingData.endTime - meetingData.startTime
-        let available = '0'.repeat(count * hours * 4)
-        console.log(available)
         let data = {
             name: userInfo.username,
             password: userInfo.password === "" ? null : userInfo.password,
-            available: available
         }
 
         fetch('/api/people/' + meetingData.id, {
@@ -25,16 +22,19 @@ export default function SigninForm({ signedIn, setSignedIn, meetingData }) {
             body: JSON.stringify(data)
         })
         .then(res => {
-            console.log('raw server response: ', res)
+            console.log('raw server login response: ', res)
             return res.status === 404 ? res : res.json()
         })
         .then(data => {
-            console.log("processed data", data)
+            console.log("processed login data", data)
             if(data == null) console.log("null res")
-            else if(data.status != undefined || data.value != undefined) {
+            else if(data.status !== undefined || data.value !== undefined) {
                 console.log(data.status, data.statusText, data.value)
             }
-            else setSignedIn(true)
+            else {
+                setUserAvailable(data.available)
+                setSignedIn(true)
+            }
         })
     }
 
