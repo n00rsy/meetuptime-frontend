@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 export default class TableDragSelect extends React.Component {
   static propTypes = {
     value: props => {
-        console.log("table got props: ",props.children, props.value)
+      console.log("table got props: ", props.children, props.value)
       const error = new Error(
         "Invalid prop `value` supplied to `TableDragSelect`. Validation failed."
       );
@@ -39,7 +39,7 @@ export default class TableDragSelect extends React.Component {
       const error = new Error(
         "Invalid prop `children` supplied to `TableDragSelect`. Validation failed."
       );
-      
+
       const trs = React.Children.toArray(props.children);
       const rowCount = props.value.length;
       const columnCount = props.value.length === 0 ? 0 : props.value[0].length;
@@ -64,9 +64,9 @@ export default class TableDragSelect extends React.Component {
     value: [],
     maxRows: Infinity,
     maxColumns: Infinity,
-    onSelectionStart: () => {},
-    onInput: () => {},
-    onChange: () => {}
+    onSelectionStart: () => { },
+    onInput: () => { },
+    onChange: () => { }
   };
 
   state = {
@@ -90,37 +90,51 @@ export default class TableDragSelect extends React.Component {
 
   render = () => {
     return (
-      <table className="table-drag-select">
-        <thead>
-    <tr>
-      <th>Month</th>
-      <th>Savings</th>
-    </tr>
-  </thead>
-        <tbody>{this.renderRows()}</tbody>
-      </table>
+      <div className="table-drag-select-container">
+        <table className="table-drag-select">
+          <thead>
+            {this.renderHeader()}
+          </thead>
+          <tbody>{this.renderRows()}</tbody>
+        </table>
+      </div>
     );
   };
+
+  renderHeader = () => {
+    let header = [<th/>]
+    this.props.days.forEach(day => header.push(<th>{day}</th>))
+    return <tr>{header}</tr>
+  }
 
   renderRows = () =>
     React.Children.map(this.props.children, (tr, i) => {
 
+      // if not header
+
       return (
         <tr key={i} {...tr.props}>
-          {React.Children.map(tr.props.children, (cell, j) => (
-            <Cell
-              key={j}
-              onTouchStart={this.handleTouchStartCell}
-              onTouchMove={this.handleTouchMoveCell}
-              selected={this.props.value[i][j]}
-              beingSelected={this.isCellBeingSelected(i, j)}
-              {...cell.props}
-            >
-              {cell.props.children}
-            </Cell>
-          ))}
+          {React.Children.map(tr.props.children, (cell, j) => {
+            if(j == 0) return cell
+            j--
+            return (
+              <Cell
+                key={j}
+                onTouchStart={this.handleTouchStartCell}
+                onTouchMove={this.handleTouchMoveCell}
+                selected={this.props.value[i][j]}
+                beingSelected={this.isCellBeingSelected(i, j)}
+                {...cell.props}
+              >
+                {cell.props.children}
+              </Cell>
+            )
+          }
+
+          )}
         </tr>
-      );
+      )
+
     });
 
   handleTouchStartCell = e => {
@@ -128,7 +142,9 @@ export default class TableDragSelect extends React.Component {
     const isTouch = e.type !== "mousedown";
     if (!this.state.selectionStarted && (isLeftClick || isTouch)) {
       e.preventDefault();
-      const { row, column } = eventToCellLocation(e);
+      let { row, column } = eventToCellLocation(e);
+      row--
+      column--
       this.props.onSelectionStart({ row, column });
       this.setState({
         selectionStarted: true,
@@ -144,7 +160,9 @@ export default class TableDragSelect extends React.Component {
   handleTouchMoveCell = e => {
     if (this.state.selectionStarted) {
       e.preventDefault();
-      const { row, column } = eventToCellLocation(e);
+      let { row, column } = eventToCellLocation(e);
+      column--
+      row--
       const { startRow, startColumn, endRow, endColumn } = this.state;
 
       if (endRow !== row || endColumn !== column) {
