@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useForm } from 'react-hook-form';
+import React, { useState } from "react"
+import { useForm } from 'react-hook-form'
 import { useHistory } from "react-router-dom"
-import Moment from 'moment-timezone';
+import Moment from 'moment-timezone'
 
 import Calendar from './calendar'
 import Week from './week'
@@ -70,6 +70,7 @@ export default function CreateForm() {
     }
 
     function sendMeeting(meeting) {
+        console.log("sending post request with: ", meeting)
         fetch('/api/meetings', {
             method: 'POST',
             headers: {
@@ -87,7 +88,6 @@ export default function CreateForm() {
     function buildOption(x) {
         return <option >{x}</option>
     }
-
     function TimeSelector() {
         if (showCal) return <Calendar selectedDates={selectedDates} setselectedDates={setselectedDates} />
         return <Week selectedDays={selectedDays} setSelectedDays={setSelectedDays} />
