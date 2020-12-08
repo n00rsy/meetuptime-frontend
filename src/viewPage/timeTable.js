@@ -2,45 +2,27 @@ import React from 'react'
 
 import './styles.css'
 
-export default function TimeTable({ hoursMoment, numTimeslots }) {
+function TimeTable({ values }) {
 
     function TimeTableCell({time, count}) {
-        console.log("received args: ", time, count)
         return (
-            <tr key = {count}>
+            <tr>
                 <th className="table-time-cell">{time}</th>
             </tr>
         )
     }
 
-    console.log("generating timetable", hoursMoment, hoursMoment.format("ddd MMM y h:mm A"), numTimeslots)
-    let timeTable = [], last = numTimeslots-1
-    for (let time = 0; time < numTimeslots; time++) {
+    console.log("generating timetable", values)
+    let timeTable = []
 
-        if (time === last) {
-            timeTable.push(<TimeTableCell time={""} count = {time} />)
-        }
-
-        if (time % 4 === 0 || time === last) {
-            let currentTime = hoursMoment.format("h:mm A")
-            console.log("sending time: ", currentTime)
-
-            timeTable.push(<tr >
-                <th className="table-time-cell">{currentTime}</th>
-            </tr>)
-            
-            console.log(timeTable[timeTable.length-1])
-            hoursMoment.add(1, 'hours')
-            
-        }
-        else {
-            timeTable.push(<TimeTableCell time={""} count = {time} />)
-        }
-    }
+    values.forEach((value, i) => {
+        timeTable.push(<TimeTableCell time={value} count = {i} />)
+    })
+    
     return (
         <table className="table-time">
             <tbody>
-                <tr key = {0} >
+                <tr >
                     <th className="table-time-cell" style={{ lineHeight: "4rem", height: "0.75rem", width: "120px" }}></th>
                 </tr>
                 {timeTable}
@@ -48,3 +30,9 @@ export default function TimeTable({ hoursMoment, numTimeslots }) {
         </table>
     )
 }
+
+function areEqual(prevProps, nextProps) {
+    return prevProps.values[0] === nextProps.values[0]
+}
+const MemoizedTimeTable = React.memo(TimeTable, areEqual)
+export default MemoizedTimeTable
