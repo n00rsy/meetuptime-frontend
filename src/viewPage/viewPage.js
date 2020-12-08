@@ -13,6 +13,21 @@ export default function ViewPage() {
     const [timezone, _setTimezone] = useState(Moment.tz.guess())
     const [fetchErr, setFetchErr] = useState(false)
 
+    const location = useLocation()
+    const history = useHistory()
+
+    function handlePath() {
+        console.log("handling path!!!")
+        let path = location.pathname
+        if (path.length === 9) {
+            getMeeting(path)
+        }
+        else {
+            console.log("invalid path")
+            setFetchErr(true)
+        }
+    }
+
     function getMeeting(path) {
         fetch('/api/meetings' + path, {
             method: 'GET',
@@ -33,7 +48,7 @@ export default function ViewPage() {
                     data.availableCount = sum1dAvailabilityArrays(data.people, data.numTimeslots, data.numDays)
                     console.log("processed data: ", data)
                     
-                    data.localTimes = setTimezone(data.days, timezone) 
+                    if(data.surveyUsing === "Dates") data.localTimes = setTimezone(data.days, timezone) 
                     setMeetingData(data)            
                 
                 }
@@ -57,27 +72,14 @@ export default function ViewPage() {
         setMeetingData({...meetingData, localTimes: localTimes})
     }
 
-    const location = useLocation()
-    const history = useHistory()
-    function handlePath() {
-        console.log("handling path!!!")
-        let path = location.pathname
-        if (path.length === 9) {
-            getMeeting(path)
-        }
-        else {
-            console.log("invalid path")
-            setFetchErr(true)
-        }
-    }
-
     useEffect(() => handlePath(), [])
     useEffect(() => {
-        console.log(meetingData)
+        console.log("new meeting data: ",meetingData)
     }, [meetingData])
+
     if (fetchErr) {
         return (
-            <p>Invalid URL!!!</p>
+            <p>404 Invalid URL!!!</p>
         )
     }
 
@@ -86,9 +88,6 @@ export default function ViewPage() {
             <p>Loading...</p>
         )
     }
-    function buildOption(x) {
-        return <option >{x}</option>
-    }
 
     return (
         <div>
@@ -96,7 +95,7 @@ export default function ViewPage() {
             <h2>{meetingData.description}</h2>
             {userData == null && <SigninForm meetingData={meetingData} setMeetingData={setMeetingData} userData={userData} setUserData={setUserData} />}
             {userData && <AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} />}
-            <select name="timezone" defaultValue={timezone} onChange={handleTimezone}>{Moment.tz.names().map(buildOption)}</select>
+            {meetingData.surveyUsing == "Dates" && <select name="timezone" defaultValue={timezone} onChange={handleTimezone}>{Moment.tz.names().map(tz => <option >{tz}</option>)}</select>}
         </div>
     )
 

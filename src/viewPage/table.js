@@ -102,7 +102,7 @@ export default class TableDragSelect extends React.Component {
 
   renderHeader = () => {
     let header = []
-    if (typeof this.props.days == "string")
+    if (this.props.days[0].length === 3)
       this.props.days.forEach(day => header.push(<th>{day}</th>))
     else {
       this.props.days.forEach(day => header.push(<th>{this.dateHeader(day)}</th>))

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Moment from 'moment-timezone'
 
 import TableDragSelect from "./table";
+import TimeTable from "./timeTable"
 
 import './styles.css'
 
@@ -18,34 +19,14 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
     function save() {
         console.log("saving changes!")
     }
-
-    function timeTableCell(time) {
-        return (
-            <tr>
-                <th className="table-time-cell">{time}</th>
-            </tr>
-        )
-    }
-
+   
     console.log("redrawing table!!!")
-    let table = [], timeTable = []
-    let hoursMoment = Moment(meetingData.localTimes[0])
+    let table = []
+    let hoursMoment = meetingData.surveyUsing === "Dates" ? Moment(meetingData.localTimes[0]) : Moment(meetingData.startTime, "h")
     console.log("hours moment", hoursMoment, hoursMoment.format("ddd MMM y h:mm A"))
-    let last = meetingData.numTimeslots - 1
+
     for (let time = 0; time < meetingData.numTimeslots; time++) {
 
-        if (time == last) {
-            timeTable.push((timeTableCell("")))
-        }
-
-        if (time % 4 == 0 || time == last) {
-            timeTable.push(timeTableCell(hoursMoment.format("h:mm A")))
-            hoursMoment.add(1, 'hours')
-            
-        }
-        else {
-            timeTable.push((timeTableCell("")))
-        }
         let currRow = []
         for (let day = 0; day < meetingData.numDays; day++) {
             currRow.push(<td />)
@@ -57,16 +38,9 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
         <div>
             <p>Signed in as {userData.name}</p>
             <div className="container">
-                <table className="table-time">
-                    <tbody>
-                        <tr>
-                            <th className="table-time-cell" style={{ lineHeight: "4rem", height: "3.5rem", width: "120px" }}></th>
-                        </tr>
-                        {timeTable}
-                    </tbody>
-                </table>
+                <TimeTable hoursMoment={hoursMoment} numTimeslots={meetingData.numTimeslots}/>
 
-                <TableDragSelect value={state.cells} onChange={handleChange} days={meetingData.localTimes}>
+                <TableDragSelect value={state.cells} onChange={handleChange} days={meetingData.surveyUsing === "Dates" ? meetingData.localTimes : meetingData.days}>
                     {table}
                 </TableDragSelect>
             </div>

@@ -81,6 +81,7 @@ export default function CreateForm() {
 
     function sendMeeting(meeting) {
         console.log("sending post request with: ", meeting)
+        
         fetch('/api/meetings', {
             method: 'POST',
             headers: {
@@ -93,11 +94,9 @@ export default function CreateForm() {
                 console.log(data);
                 history.push("/" + data.code);
             })
+        
     }
 
-    function buildOption(x) {
-        return <option >{x}</option>
-    }
     function TimeSelector() {
         if (showCal) return <Calendar selectedDates={selectedDates} setselectedDates={setselectedDates} />
         return <Week selectedDays={selectedDays} setSelectedDays={setSelectedDays} />
@@ -115,7 +114,8 @@ export default function CreateForm() {
 
             <TimeSelector />
 
-            <select name="timezone" ref={register({ required: true })}>{timezones.map(buildOption)}</select>
+            {showCal && <select name="timezone" ref={register({ required: true })}>{timezones.map(tz => <option >{tz}</option>)}</select>}
+
             <select name="startTime" ref={register({ required: true })}>
                 <option value="0">midnight</option>
                 <option value="1"> 1 am</option>
