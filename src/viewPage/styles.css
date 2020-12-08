@@ -1,23 +1,40 @@
-
-.table-drag-select-container {
-  width: 50%;
-  margin:auto;
-}
-
 .table-time {
-  text-align: right;
+  border-collapse: collapse;
 }
 
+.table-time-cell {
+  min-width: 100px;
+  text-align: right;
+  color:red;
+  font-size: 1rem;
+  line-height: 1rem;
+  height: 1rem;
+  border: 1px solid purple;
+}
+.table-header {
+  color:blue;
+  hyphens: auto;
+}
+.table-header-day {
+  font-size: 2rem;
+}
+.table-drag-select-container {
+
+  flex-grow: 1;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+.container {
+  width: 50%;
+  display:flex;
+  margin-left:auto;
+  margin-right:auto;
+}
 .table-drag-select {
-    width: 100%;
-    /* Stretch horizontally to fill parent */
     /* Keep columns same width */
     table-layout: fixed;
     /* Disable text selection */
     user-select: none;
-    /* Center in parent */
-    margin-left: auto;
-    margin-right: auto;
     /* Remove space between border */
     border-collapse: collapse;
   }
@@ -25,9 +42,7 @@
   /* Table cells */
   .table-drag-select td {
     text-align: center;
-    /* Cut off long strings of text with ... */
-    text-overflow: ellipsis;
-    overflow: hidden;
+
     /* Make transparent gaps between cells. Better than relying on margin
      * because clicking an element's margin doesn't trigger events */
     
@@ -38,7 +53,8 @@
     padding-left: 0rem;
     padding-right: 0rem;
     border: 1px solid black;
-    width: 50px;
+    width: 200px;
+    min-width: 200px;
     height: 1rem;
   }
   
@@ -56,11 +72,16 @@
   
   /* Cells that have been selected */
   .table-drag-select td.cell-selected {
-    background-color: #A9A9A9;
+    background-color: #48864d;
   }
   
   /* Cells that are in the process of being selected */
   .table-drag-select td.cell-being-selected {
     /* This is the blue color you see when you select text with the cursor */
-    background-color: #3F83D5;
+    background-color: #69c771;
+  }
+
+  .table-drag-select td.cell-being-deselected {
+    /* This is the blue color you see when you select text with the cursor */
+    background-color: rgb(177, 177, 177);
   }

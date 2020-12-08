@@ -1,8 +1,8 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import {convert1dTo2dArray} from './utils'
+import {convert1dTo2dArray, subtract} from './utils'
 
-export default function SigninForm({ setSignedIn, meetingData, setUserAvailable }) {
+export default function SigninForm({ meetingData, setMeetingData, setUserData }) {
 
     const { register, handleSubmit } = useForm()
 
@@ -32,9 +32,10 @@ export default function SigninForm({ setSignedIn, meetingData, setUserAvailable 
             }
             else {
                 data.available = convert1dTo2dArray([...data.available], meetingData.numTimeslots, meetingData.numDays)
-                console.log("sign in processed available: " ,data.available)
-                setUserAvailable(data.available)
-                setSignedIn(true)
+                meetingData.availableCount = subtract(meetingData.availableCount, data.available)
+                
+                setUserData(data)
+                setMeetingData(meetingData)
             }
         })
     }

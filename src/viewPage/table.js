@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 export default class TableDragSelect extends React.Component {
   static propTypes = {
     value: props => {
-      console.log("table got props: ", props.children, props.value)
       const error = new Error(
         "Invalid prop `value` supplied to `TableDragSelect`. Validation failed."
       );
@@ -102,9 +101,27 @@ export default class TableDragSelect extends React.Component {
   };
 
   renderHeader = () => {
-    let header = [<th/>]
-    this.props.days.forEach(day => header.push(<th>{day}</th>))
-    return <tr>{header}</tr>
+    let header = []
+    if (typeof this.props.days == "string")
+      this.props.days.forEach(day => header.push(<th>{day}</th>))
+    else {
+      this.props.days.forEach(day => header.push(<th>{this.dateHeader(day)}</th>))
+    }
+    return <tr className="table-header">{header}</tr>
+  }
+
+  dateHeader = (day) => {
+    return (
+      <div>
+        <div className="table-header-day">
+          {day.format('ddd')}
+        </div>
+        <div className="table-header-date">
+          {day.format('MMM D, y')}
+        </div>
+      </div>
+
+    )
   }
 
   renderRows = () =>
@@ -115,8 +132,7 @@ export default class TableDragSelect extends React.Component {
       return (
         <tr key={i} {...tr.props}>
           {React.Children.map(tr.props.children, (cell, j) => {
-            if(j == 0) return cell
-            j--
+
             return (
               <Cell
                 key={j}
@@ -124,6 +140,7 @@ export default class TableDragSelect extends React.Component {
                 onTouchMove={this.handleTouchMoveCell}
                 selected={this.props.value[i][j]}
                 beingSelected={this.isCellBeingSelected(i, j)}
+                addMode={this.state.addMode}
                 {...cell.props}
               >
                 {cell.props.children}
@@ -144,7 +161,6 @@ export default class TableDragSelect extends React.Component {
       e.preventDefault();
       let { row, column } = eventToCellLocation(e);
       row--
-      column--
       this.props.onSelectionStart({ row, column });
       this.setState({
         selectionStarted: true,
@@ -161,7 +177,6 @@ export default class TableDragSelect extends React.Component {
     if (this.state.selectionStarted) {
       e.preventDefault();
       let { row, column } = eventToCellLocation(e);
-      column--
       row--
       const { startRow, startColumn, endRow, endColumn } = this.state;
 
@@ -258,6 +273,7 @@ class Cell extends React.Component {
       selected,
       onTouchStart,
       onTouchMove,
+      addMode,
       ...props
     } = this.props;
     if (disabled) {
@@ -268,7 +284,8 @@ class Cell extends React.Component {
         className += " cell-selected";
       }
       if (beingSelected) {
-        className += " cell-being-selected";
+        if (addMode) className += " cell-being-selected";
+        else className += " cell-being-deselected"
       }
     }
     return (

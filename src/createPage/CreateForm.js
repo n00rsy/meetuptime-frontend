@@ -25,6 +25,16 @@ export default function CreateForm() {
 
     let history = useHistory()
 
+    function processDates(dates, starttime, timezone) {
+        let processedDates = []
+        dates.forEach(date => {
+            let utcDate = Moment(date).tz(timezone)
+            utcDate.set({hour:starttime})
+            processedDates.push(utcDate.toISOString())
+        })
+        return processedDates
+    }
+
     const onSubmit = function (data) {
         data.startTime = parseInt(data.startTime)
         data.endTime = parseInt(data.endTime)
@@ -42,7 +52,7 @@ export default function CreateForm() {
                 alert("You may only selct up to 7 dates.")
             }
             else {
-                data.dates = selectedDates
+                data.dates = processDates(selectedDates, data.startTime, data.timezone)
                 data.days = []
                 sendMeeting(data)
             }
