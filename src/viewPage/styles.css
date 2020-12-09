@@ -1,22 +1,28 @@
-.table-time {
+.time-table {
   border-collapse: collapse;
+  user-select: none;
 }
 
-.table-time-cell {
+.time-table-cell {
   min-width: 100px;
   text-align: right;
-  color:red;
-  font-size: 1rem;
+  color:#424242;
+  font-size: 0.5rem;
+  font-style: normal;
   line-height: 1rem;
   height: 1rem;
-  border: 1px solid purple;
+  border: 1px solid white;
 }
 .table-header {
-  color:blue;
+  color :#424242;
   hyphens: auto;
 }
 .table-header-day {
+  color :#424242;
   font-size: 2rem;
+}
+.table-header-date {
+  font-size: 1rem;
 }
 .table-drag-select-container {
 
@@ -52,7 +58,9 @@
     /* Shows more text when text too big to fit into cell */
     padding-left: 0rem;
     padding-right: 0rem;
-    border: 1px solid black;
+    border: 1px solid #e1e3e6;
+    border-left: 3px solid #e1e3e6;
+    border-right: 3px solid #e1e3e6;
     width: 100px;
     min-width: 100px;
     height: 1rem;
@@ -60,7 +68,7 @@
   
   /* Cells that can be interacted with */
   .table-drag-select td.cell-enabled {
-    background-color: #DDD;
+    background-color: rgb(255, 255, 255);
     /* Make the cursor a + symbol */
     cursor: cell;
   }
@@ -73,15 +81,24 @@
   /* Cells that have been selected */
   .table-drag-select td.cell-selected {
     background-color: #48864d;
+    border-top: 1px solid #48864d;
+    border-bottom: 1px solid #48864d;
   }
   
   /* Cells that are in the process of being selected */
   .table-drag-select td.cell-being-selected {
     /* This is the blue color you see when you select text with the cursor */
     background-color: #69c771;
+    border-top: 1px solid #69c771;
+    border-bottom: 1px solid #69c771;
   }
 
   .table-drag-select td.cell-being-deselected {
     /* This is the blue color you see when you select text with the cursor */
     background-color: rgb(177, 177, 177);
+    border-top: 1px solid rgb(177, 177, 177);
+    border-bottom: 1px solid  rgb(177, 177, 177);
+    
   }
+
+  

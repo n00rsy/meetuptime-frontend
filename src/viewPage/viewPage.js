@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 
 import SigninForm from './signinForm'
+import SignoutForm from './signoutForm'
 import AvailabilityTable from './available'
 import { sum1dAvailabilityArrays } from './utils'
 import Moment from 'moment-timezone'
@@ -47,10 +48,10 @@ export default function ViewPage() {
                     if (data.days.length === 0) data.days = [...data.dates]
                     data.availableCount = sum1dAvailabilityArrays(data.people, data.numTimeslots, data.numDays)
                     console.log("processed data: ", data)
-                    
-                    if(data.surveyUsing === "Dates") data.localTimes = setTimezone(data.days, timezone) 
-                    setMeetingData(data)            
-                
+
+                    if (data.surveyUsing === "Dates") data.localTimes = setTimezone(data.days, timezone)
+                    setMeetingData(data)
+
                 }
             })
     }
@@ -69,12 +70,17 @@ export default function ViewPage() {
         console.log("changing timezone to ", e.target.value)
         let localTimes = setTimezone(meetingData.days, e.target.value)
         console.log(meetingData.localTimes)
-        setMeetingData({...meetingData, localTimes: localTimes})
+        setMeetingData({ ...meetingData, localTimes: localTimes })
+    }
+
+    function SignInSignOut() {
+        if(userData == null) return <SigninForm meetingData={meetingData} setMeetingData={setMeetingData} userData={userData} setUserData={setUserData} />
+        else return <SignoutForm meetingData={meetingData} setMeetingData={setMeetingData} userData={userData} setUserData={setUserData}/>
     }
 
     useEffect(() => handlePath(), [])
     useEffect(() => {
-        console.log("new meeting data: ",meetingData)
+        console.log("new meeting data: ", meetingData)
     }, [meetingData])
 
     if (fetchErr) {
@@ -93,9 +99,11 @@ export default function ViewPage() {
         <div>
             <h1>{meetingData.name}</h1>
             <h2>{meetingData.description}</h2>
-            {userData == null && <SigninForm meetingData={meetingData} setMeetingData={setMeetingData} userData={userData} setUserData={setUserData} />}
+            <SignInSignOut />
             {userData && <AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} />}
             {meetingData.surveyUsing == "Dates" && <select name="timezone" defaultValue={timezone} onChange={handleTimezone}>{Moment.tz.names().map(tz => <option >{tz}</option>)}</select>}
+            <p>Create your own!</p>
+            <p>Submit feedback</p>
         </div>
     )
 

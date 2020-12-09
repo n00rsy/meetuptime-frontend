@@ -3,8 +3,7 @@ export const convert1dTo2dArray = (input, numRows, numCols) => {
     for (let row = 0; row < numRows; row++) {
         let currRow = []
         for (let col = 0; col < numCols; col++) {
-            
-            currRow.push(input[getIndexFromCoords(row, col, numRows)])
+            currRow.push(input[getIndexFromCoords(row, col, numCols)])
         }
         output.push(currRow)
     }
@@ -39,6 +38,17 @@ export const sum1dAvailabilityArrays = (arrays, numRows, numCols) => {
     return output
 }
 
-export const getIndexFromCoords = (row, col, numRows) => {
-    return (col * numRows) + row
+export const getIndexFromCoords = (row, col, numCols) => {
+    return (row * numCols) + col
+}
+
+export const convert2dTo1dArray = (matrix) => {
+    let output = []
+    matrix.forEach(row => {
+        row.forEach(cell => {
+            output.push(cell)
+        })
+    })
+    //console.log("1d array:", output)
+    return output
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import Moment from 'moment-timezone'
 
 import TableDragSelect from "./table";
 import MemoizedTimeTable from "./timeTable"
+import { convert2dTo1dArray } from './utils'
 
 import './styles.css'
 
@@ -11,65 +11,68 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
     const [state, setState] = useState({
         cells: userData.available
     })
+    const [saving, setSaving] = useState(false)
     let handleChange = cells => {
         console.log("new cells: ", cells)
         setState({ cells });
     }
 
     function save() {
-        console.log("saving changes!")
-    }
-   
-    function computeTimeTableValues(hm, numTimeslots) {
-        console.log("computing time table values!!!!!!")
-        let timeTableValues = [], last = meetingData.numTimeslots-1, hoursMoment = Moment(hm, "h")
-        for (let time = 0; time < numTimeslots; time++) {
-
-            if (time === last) {
-                timeTableValues.push("")
-            }
-    
-            if (time % 4 === 0 || time === last) {
-                let currentTime = hoursMoment.format("h:mm A")
-                console.log("sending time: ", currentTime)
-                timeTableValues.push(currentTime)
-                hoursMoment.add(1, 'hours')
-            }
-            else {
-                timeTableValues.push("")
-            }
+        setSaving(true)
+        let data = {
+            name: userData.name,
+            available: convert2dTo1dArray(state.cells)
         }
-        return timeTableValues
+        console.log("saving changes!", data, meetingData.id)
+        fetch('/api/people/' + meetingData.id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .catch(err => {
+                console.log("fetch error!", err)
+                setSaving(false)
+            })
+            .then(res => {
+                setSaving(false)
+                console.log('raw server response: ', res)
+                return res.status === 204
+            })
+
     }
 
     function generateTableCells(numTimeslots, numDays) {
         console.log("redrawing table!!!")
-        let table = []
+        let table = [], last = numTimeslots - 1
         for (let time = 0; time < numTimeslots; time++) {
             let currRow = []
             for (let day = 0; day < numDays; day++) {
-                currRow.push(<td />)
+                if (time % 4 === 0) currRow.push(<td style={{ borderTop: "2px solid #9ea5b0" }} />)
+                else if (time == last) currRow.push(<td style={{ borderBottom: "2px solid #9ea5b0" }} />)
+                else currRow.push(<td />)
             }
             table.push(<tr>{currRow}</tr>)
         }
         return table
     }
 
-    let hoursMoment = meetingData.surveyUsing === "Dates" ? meetingData.localTimes[0].format("h") : meetingData.startTime
+    let startingMoment = meetingData.surveyUsing === "Dates" ? meetingData.localTimes[0].format("h") : meetingData.startTime
     const table = useMemo(() => generateTableCells(meetingData.numTimeslots, meetingData.numDays), [meetingData.numTimeslots, meetingData.numDays])
-    const timeTableValues = useMemo(() => computeTimeTableValues(hoursMoment, meetingData.numTimeslots), [hoursMoment, meetingData.numTimeslots])
 
     return (
         <div>
-            <p>Signed in as {userData.name}</p>
             <div className="container">
-                <MemoizedTimeTable values = {timeTableValues}/>
+                <MemoizedTimeTable startingMoment={startingMoment} numTimeslots={meetingData.numTimeslots} surveyUsing={meetingData.surveyUsing} />
 
                 <TableDragSelect value={state.cells} onChange={handleChange} days={meetingData.surveyUsing === "Dates" ? meetingData.localTimes : meetingData.days}>
                     {table}
                 </TableDragSelect>
             </div>
-            <button value="Save Changes" onClick={save}>Save Changes</button>
+            <div className="container-bottom">
+                <button value="Save" onClick={save} className="myButton">{saving ? "SAVING..." : " Save"}</button>
+            </div>
         </div>
     )
 }
