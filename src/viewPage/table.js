@@ -4,28 +4,6 @@ import PropTypes from "prop-types";
 
 export default class TableDragSelect extends React.Component {
   static propTypes = {
-    value: props => {
-      const error = new Error(
-        "Invalid prop `value` supplied to `TableDragSelect`. Validation failed."
-      );
-      if (!Array.isArray(props.value)) {
-        return error;
-      }
-      if (props.value.length === 0) {
-        return;
-      }
-      const columnCount = props.value[0].length;
-      for (const row of props.value) {
-        if (!Array.isArray(row) || row.length !== columnCount) {
-          return error;
-        }
-        for (const cell of row) {
-          if (typeof cell !== "boolean") {
-            return error;
-          }
-        }
-      }
-    },
     maxRows: PropTypes.number,
     maxColumns: PropTypes.number,
     onSelectionStart: PropTypes.func,
@@ -57,7 +35,7 @@ export default class TableDragSelect extends React.Component {
         }
       }
     }
-  };
+  }
 
   static defaultProps = {
     value: [],
@@ -74,15 +52,31 @@ export default class TableDragSelect extends React.Component {
     startColumn: null,
     endRow: null,
     endColumn: null,
-    addMode: null
+    addMode: null,
+    viewing: this.props.value === null,
+    colors: this.props.colors
   };
 
   componentDidMount = () => {
+    console.log("table component mounting")
     window.addEventListener("mouseup", this.handleTouchEndWindow);
     window.addEventListener("touchend", this.handleTouchEndWindow);
   };
 
+  componentDidUpdate = (prevProps) => {
+    console.log("table component updating")
+    if((prevProps.value !== this.props.value)) {
+      console.log("setting new table viewing state", this.props)
+      this.setState({viewing: this.props.value === null})
+    }
+    if (prevProps.colors !== this.props.colors) {
+      console.log("colors changed!!!", prevProps.colors, this.props.colors)
+      this.setState({colors: this.props.colors})
+    }
+  }
+
   componentWillUnmount = () => {
+    console.log("table component unmounting")
     window.removeEventListener("mouseup", this.handleTouchEndWindow);
     window.removeEventListener("touchend", this.handleTouchEndWindow);
   };
@@ -128,39 +122,73 @@ export default class TableDragSelect extends React.Component {
     React.Children.map(this.props.children, (tr, i) => {
 
       // if not header
-
       return (
         <tr key={i} {...tr.props}>
           {React.Children.map(tr.props.children, (cell, j) => {
-
-            return (
-              <Cell
-                key={j}
-                onTouchStart={this.handleTouchStartCell}
-                onTouchMove={this.handleTouchMoveCell}
-                selected={this.props.value[i][j]}
-                beingSelected={this.isCellBeingSelected(i, j)}
-                addMode={this.state.addMode}
-                {...cell.props}
-              >
-                {cell.props.children}
-              </Cell>
-            )
+            if (this.state.viewing === true) {
+              return (
+                <Cell
+                  key={j}
+                  onTouchStart={this.handleTouchStartCellViewing}
+                  onTouchMove={this.handleTouchMoveCellViewing}
+                  selected={false}
+                  beingSelected={this.isCellBeingSelected(i, j)}
+                  addMode={this.state.addMode}
+                  disabled={true}
+                  color={this.state.colors[i][j]}
+                  rowNum={i}
+                  {...cell.props}
+                >
+                  {cell.props.children}
+                </Cell>
+              )
+            }
+            else {
+              return (
+                <Cell
+                  key={j}
+                  onTouchStart={this.handleTouchStartCellEditing}
+                  onTouchMove={this.handleTouchMoveCellEditing}
+                  selected={this.props.value[i][j]}
+                  beingSelected={this.isCellBeingSelected(i, j)}
+                  addMode={this.state.addMode}
+                  disabled={false}
+                  color={this.state.colors[i][j]}
+                  rowNum={i}
+                  {...cell.props}
+                >
+                  {cell.props.children}
+                </Cell>
+              )
+            }
           }
-
           )}
         </tr>
       )
 
     });
 
-  handleTouchStartCell = e => {
+  handleTouchStartCellViewing = e => {
+    console.log("touch started", e)
+    const isLeftClick = e.button === 0;
+    const isTouch = e.type !== "mousedown";
+    if (isLeftClick || isTouch) {
+      e.preventDefault();
+      let { row, column } = eventToCellLocation(e);
+
+    }
+  }
+
+  handleTouchMoveCellViewing = e => {
+    console.log("touch moved", e)
+  }
+
+  handleTouchStartCellEditing = e => {
     const isLeftClick = e.button === 0;
     const isTouch = e.type !== "mousedown";
     if (!this.state.selectionStarted && (isLeftClick || isTouch)) {
       e.preventDefault();
       let { row, column } = eventToCellLocation(e);
-      row--
       this.props.onSelectionStart({ row, column });
       this.setState({
         selectionStarted: true,
@@ -173,11 +201,10 @@ export default class TableDragSelect extends React.Component {
     }
   };
 
-  handleTouchMoveCell = e => {
+  handleTouchMoveCellEditing = e => {
     if (this.state.selectionStarted) {
       e.preventDefault();
       let { row, column } = eventToCellLocation(e);
-      row--
       const { startRow, startColumn, endRow, endColumn } = this.state;
 
       if (endRow !== row || endColumn !== column) {
@@ -274,26 +301,38 @@ class Cell extends React.Component {
       onTouchStart,
       onTouchMove,
       addMode,
+      color,
+      rowNum,
       ...props
     } = this.props;
-    if (disabled) {
-      className += " cell-disabled";
-    } else {
+
+    let style = {backgroundColor: color}
+    let selectedColor = "#35b57b", deselectedColor = "red"
+
       className += " cell-enabled";
-      if (selected) {
-        className += " cell-selected";
-      }
       if (beingSelected) {
-        if (addMode) className += " cell-being-selected";
-        else className += " cell-being-deselected"
+        if (addMode) style.backgroundColor = selectedColor
+        else style.backgroundColor = deselectedColor
       }
+      else if (selected) {
+        //className += " cell-selected";
+        style.backgroundColor = selectedColor
+      }
+
+
+    //console.log("color: ", style)
+
+    if(rowNum % 4 === 0) {
+      style.borderTop = "3px solid #e1e3e6"
     }
+
     return (
       <td
         ref={td => (this.td = td)}
         className={className}
         onMouseDown={this.handleTouchStart}
         onMouseMove={this.handleTouchMove}
+        style={style}
         {...props}
       >
         {this.props.children || <span>&nbsp;</span>}
@@ -334,7 +373,7 @@ const eventToCellLocation = e => {
     }
   }
   return {
-    row: target.parentNode.rowIndex,
+    row: target.parentNode.rowIndex - 1,
     column: target.cellIndex
   };
 };

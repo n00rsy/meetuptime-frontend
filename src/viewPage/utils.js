@@ -10,32 +10,24 @@ export const convert1dTo2dArray = (input, numRows, numCols) => {
     return output
 }
 
-export const subtract = (a, b) => {
-    console.log("subtraction input:", a, b)
+export const subtract2dArrays = (a, b) => {
     for (let row = 0; row < a.length; row++) {
         for (let col = 0; col < a[0].length; col++) {
-            a[row][col] -= b[row][col]
+            a[row][col] -= b[row][col] === true ? 1 : 0
         }
     }
-    console.log("subtraction output: ", a)
     return a
 }
 
-export const sum1dAvailabilityArrays = (arrays, numRows, numCols) => {
-    let output = []
-    for (let row = 0; row < numRows; row++) {
-        let currRow = []
-        for (let col = 0; col < numCols; col++) {
-            let index = getIndexFromCoords(row, col, numRows)
-            let count = 0
-            arrays.forEach(e => {
-                count += e.available[index] ? 1 : 0
-            })
-            currRow.push(count)
+export const add2dArrays = (a, b) => {
+    //console.log("addition input:", a, b)
+    for (let row = 0; row < a.length; row++) {
+        for (let col = 0; col < a[0].length; col++) {
+            a[row][col] += b[row][col]
         }
-        output.push(currRow)
     }
-    return output
+    //console.log("addition output: ", a)
+    return a
 }
 
 export const getIndexFromCoords = (row, col, numCols) => {
@@ -51,4 +43,49 @@ export const convert2dTo1dArray = (matrix) => {
     })
     //console.log("1d array:", output)
     return output
+}
+
+export const initialize2dIntArray = (numRows, numCols) => {
+    let output = []
+    for (let row = 0; row < numRows; row++) {
+        let currRow = []
+        for (let col = 0; col < numCols; col++) {
+            currRow.push(0)
+        }
+        output.push(currRow)
+    }
+    return output
+}
+
+export const map2dArray= (matrix, num) => {
+    console.log("mapping matrix to this many respondants: ", num)
+    let output = []
+    for (let row = 0; row < matrix.length; row++) {
+        let currRow = []
+        for (let col = 0; col < matrix[0].length; col++) {
+            if(num === 0 || matrix[row][col] === 0) currRow.push("#ffffff")
+            else if(num === 1) {
+                currRow.push("#325c35")
+            }
+            else currRow.push(lerpColor(0xcde3c8, 0x325c35 , (matrix[row][col]-1)/(num-1)))
+        }
+        output.push(currRow)
+    }
+    return output
+}
+
+export const lerpColor = function(a, b, amount) {
+    const ar = a >> 16,
+          ag = a >> 8 & 0xff,
+          ab = a & 0xff,
+
+          br = b >> 16,
+          bg = b >> 8 & 0xff,
+          bb = b & 0xff,
+
+          rr = ar + amount * (br - ar),
+          rg = ag + amount * (bg - ag),
+          rb = ab + amount * (bb - ab);
+
+    return '#' + ((rr << 16) + (rg << 8) + (rb | 0)).toString(16);
 }

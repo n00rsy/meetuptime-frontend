@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 
 import SigninForm from './signinForm'
 import SignoutForm from './signoutForm'
 import AvailabilityTable from './available'
-import { sum1dAvailabilityArrays } from './utils'
+import { convert1dTo2dArray, initialize2dIntArray, add2dArrays, map2dArray } from './utils'
 import Moment from 'moment-timezone'
 
 export default function ViewPage() {
@@ -46,10 +46,18 @@ export default function ViewPage() {
                 }
                 else {
                     if (data.days.length === 0) data.days = [...data.dates]
-                    data.availableCount = sum1dAvailabilityArrays(data.people, data.numTimeslots, data.numDays)
-                    console.log("processed data: ", data)
 
+                    //let availableCount = initialize2dIntArray(data.numTimeslots, data.numDays)
+                    data.availableCount = initialize2dIntArray(data.numTimeslots, data.numDays)
+                    data.numRespondents = data.people.length
+                    data.people.forEach(person => {
+                        person.available = convert1dTo2dArray(person.available, data.numTimeslots, data.numDays)
+                        data.availableCount = add2dArrays(data.availableCount, person.available)
+                        //console.log("converted available array: " + person.name, person.available)
+                    })
+                    data.colors = map2dArray(data.availableCount, data.numRespondents)
                     if (data.surveyUsing === "Dates") data.localTimes = setTimezone(data.days, timezone)
+                    console.log("processed data: ", data)
                     setMeetingData(data)
 
                 }
@@ -59,7 +67,6 @@ export default function ViewPage() {
     function setTimezone(days, usertz) {
         let localTimes = []
         days.forEach(day => {
-            console.log(Moment.utc(day).tz(usertz).toString())
             localTimes.push(Moment.utc(day).tz(usertz))
         })
         _setTimezone(usertz)
@@ -100,8 +107,8 @@ export default function ViewPage() {
             <h1>{meetingData.name}</h1>
             <h2>{meetingData.description}</h2>
             <SignInSignOut />
-            {userData && <AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} />}
-            {meetingData.surveyUsing == "Dates" && <select name="timezone" defaultValue={timezone} onChange={handleTimezone}>{Moment.tz.names().map(tz => <option >{tz}</option>)}</select>}
+            {<AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} />}
+            {meetingData.surveyUsing === "Dates" && <select name="timezone" defaultValue={timezone} onChange={handleTimezone}>{Moment.tz.names().map(tz => <option >{tz}</option>)}</select>}
             <p>Create your own!</p>
             <p>Submit feedback</p>
         </div>
