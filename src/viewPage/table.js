@@ -3,39 +3,6 @@ import clone from "clone";
 import PropTypes from "prop-types";
 
 export default class TableDragSelect extends React.Component {
-  static propTypes = {
-    maxRows: PropTypes.number,
-    maxColumns: PropTypes.number,
-    onSelectionStart: PropTypes.func,
-    onInput: PropTypes.func,
-    onChange: PropTypes.func,
-    children: props => {
-      if (TableDragSelect.propTypes.value(props)) {
-        return; // Let error be handled elsewhere
-      }
-      const error = new Error(
-        "Invalid prop `children` supplied to `TableDragSelect`. Validation failed."
-      );
-
-      const trs = React.Children.toArray(props.children);
-      const rowCount = props.value.length;
-      const columnCount = props.value.length === 0 ? 0 : props.value[0].length;
-      if (trs.length !== rowCount) {
-        return error;
-      }
-      for (const tr of trs) {
-        const tds = React.Children.toArray(tr.props.children);
-        if (tr.type !== "tr" || tds.length !== columnCount) {
-          return error;
-        }
-        for (const td of tds) {
-          if (td.type !== "td") {
-            return error;
-          }
-        }
-      }
-    }
-  }
 
   static defaultProps = {
     value: [],
@@ -52,9 +19,7 @@ export default class TableDragSelect extends React.Component {
     startColumn: null,
     endRow: null,
     endColumn: null,
-    addMode: null,
-    viewing: this.props.value === null,
-    colors: this.props.colors
+    addMode: null
   };
 
   componentDidMount = () => {
@@ -62,18 +27,6 @@ export default class TableDragSelect extends React.Component {
     window.addEventListener("mouseup", this.handleTouchEndWindow);
     window.addEventListener("touchend", this.handleTouchEndWindow);
   };
-
-  componentDidUpdate = (prevProps) => {
-    console.log("table component updating")
-    if((prevProps.value !== this.props.value)) {
-      console.log("setting new table viewing state", this.props)
-      this.setState({viewing: this.props.value === null})
-    }
-    if (prevProps.colors !== this.props.colors) {
-      console.log("colors changed!!!", prevProps.colors, this.props.colors)
-      this.setState({colors: this.props.colors})
-    }
-  }
 
   componentWillUnmount = () => {
     console.log("table component unmounting")
@@ -97,9 +50,9 @@ export default class TableDragSelect extends React.Component {
   renderHeader = () => {
     let header = []
     if (this.props.days[0].length === 3)
-      this.props.days.forEach(day => header.push(<th>{day}</th>))
+      this.props.days.forEach((day, i) => header.push(<th key = {i}>{day}</th>))
     else {
-      this.props.days.forEach(day => header.push(<th>{this.dateHeader(day)}</th>))
+      this.props.days.forEach((day, i) => header.push(<th key = {i}>{this.dateHeader(day)}</th>))
     }
     return <tr className="table-header-day">{header}</tr>
   }
@@ -114,7 +67,6 @@ export default class TableDragSelect extends React.Component {
           {day.format('MMM D, y')}
         </div>
       </div>
-
     )
   }
 
@@ -125,7 +77,7 @@ export default class TableDragSelect extends React.Component {
       return (
         <tr key={i} {...tr.props}>
           {React.Children.map(tr.props.children, (cell, j) => {
-            if (this.state.viewing === true) {
+            if (this.props.value === null) {
               return (
                 <Cell
                   key={j}
@@ -135,7 +87,7 @@ export default class TableDragSelect extends React.Component {
                   beingSelected={this.isCellBeingSelected(i, j)}
                   addMode={this.state.addMode}
                   disabled={true}
-                  color={this.state.colors[i][j]}
+                  color={this.props.colors[i][j]}
                   rowNum={i}
                   {...cell.props}
                 >
@@ -153,7 +105,7 @@ export default class TableDragSelect extends React.Component {
                   beingSelected={this.isCellBeingSelected(i, j)}
                   addMode={this.state.addMode}
                   disabled={false}
-                  color={this.state.colors[i][j]}
+                  color={this.props.colors[i][j]}
                   rowNum={i}
                   {...cell.props}
                 >
@@ -274,7 +226,8 @@ class Cell extends React.Component {
   // cells
   shouldComponentUpdate = nextProps =>
     this.props.beingSelected !== nextProps.beingSelected ||
-    this.props.selected !== nextProps.selected;
+    this.props.selected !== nextProps.selected || 
+    this.props.color !== nextProps.color
 
   componentDidMount = () => {
     // We need to call addEventListener ourselves so that we can pass

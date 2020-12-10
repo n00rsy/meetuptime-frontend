@@ -82,7 +82,7 @@ export default function ViewPage() {
 
     function SignInSignOut() {
         if(userData == null) return <SigninForm meetingData={meetingData} setMeetingData={setMeetingData} userData={userData} setUserData={setUserData} />
-        else return <SignoutForm meetingData={meetingData} setMeetingData={setMeetingData} userData={userData} setUserData={setUserData}/>
+        else return <SignoutForm userData={userData} setUserData={setUserData} getMeeting = {() => getMeeting('/' + meetingData.id)}/>
     }
 
     useEffect(() => handlePath(), [])

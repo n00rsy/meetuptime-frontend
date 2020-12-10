@@ -1,9 +1,11 @@
 import React from 'react'
 
-export default function SignoutForm({ meetingData, setMeetingData, userData, setUserData }) {
+export default function SignoutForm({userData, setUserData, getMeeting }) {
 
     function signout() {
         console.log("signing out")
+        getMeeting()
+        setUserData(null)
     }
 
     function deleteResponse() {

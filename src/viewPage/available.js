@@ -10,7 +10,7 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
 
     const [saving, setSaving] = useState(false)
     let handleChange = cells => {
-        console.log("new cells: ", cells)
+        //console.log("new cells: ", cells)
         setUserData({...userData, available: cells });
     }
 
@@ -41,15 +41,14 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
     }
 
     function generateTableCells(numTimeslots, numDays) {
-
-        console.log("redrawing table!!!")
+        console.log("generating raw table rows and cols!!!")
         let table = []
         for (let time = 0; time < numTimeslots; time++) {
             let currRow = []
             for (let day = 0; day < numDays; day++) {
-                currRow.push(<td></td>)
+                currRow.push(<td key = {day}></td>)
             }
-            table.push(<tr>{currRow}</tr>)
+            table.push(<tr key={time}>{currRow}</tr>)
         }
         return table
     }
