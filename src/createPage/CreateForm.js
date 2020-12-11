@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form'
 import { useHistory } from "react-router-dom"
 import Moment from 'moment-timezone'
 
+import { Form } from 'react-bootstrap'
+
 import Calendar from './calendar'
 import Week from './week'
 
@@ -39,19 +41,19 @@ export default function CreateForm() {
 
     const onSubmit = function (data) {
 
-        console.log(data)
+        console.log("received data: ", data)
         let validDaysSelection = validateDaySelections(data.surveyUsing)
         if (data.surveyUsing === "Dates" && validDaysSelection) {
             data.dates = processDates(selectedDates, data.startTime, data.timezone)
             data.days = []
             console.log("sending data!!!!")
-            //sendMeeting(data)
+            sendMeeting(data)
         }
         else if (data.surveyUsing === "Days" && validDaysSelection) {
             data.days = selectedDays
             data.dates = []
             console.log("sending data!!!!")
-            //sendMeeting(data)
+            sendMeeting(data)
         }
     }
 
@@ -80,14 +82,16 @@ export default function CreateForm() {
             })
             .then(data => {
                 console.log(data);
-                history.push("/" + data.code);
+
+                if (data && data.code) history.push("/" + data.code)
+                else setDaySelectionError("Unable to create event :( Please try again later.")
             })
 
     }
 
     useEffect(() => {
         if (daySelectionError) setDaySelectionError(null)
-    }, [selectedDates, selectedDays])
+    }, [selectedDates, selectedDays, showCal])
 
     function TimeSelector() {
         if (showCal) return <Calendar selectedDates={selectedDates} setselectedDates={setselectedDates} />
@@ -127,107 +131,123 @@ export default function CreateForm() {
 
     console.log(errors)
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <input type="text" placeholder="Event Name" name="name" ref={register({
-                required: {
-                    value: true,
-                    message: "You must enter an event name"
-                }, minLength: {
-                    value: 1,
-                    message: "Event name must be between 1-100 characters long"
-                }, maxLength: {
-                    value: 100,
-                    message: "Event name must be between 1-100 characters long"
-                }
-            })} />
-            {errors.name &&
-                <div className="error">{errors.name.message}</div>}
-            <input type="text" placeholder="Description (optional)" name="description" ref={register({
-                maxLength: {
-                    value: 200,
-                    message: "Event description must be less than 200 characters long"
-                }
-            })} />
-            {errors.description &&
-                <div className="error">{errors.description.message}</div>}
-            <div onChange={onChange}>
-                <input name="surveyUsing" type="radio" value="Dates" ref={register({ required: true })} /> Dates
-            <input name="surveyUsing" type="radio" value="Days" ref={register({ required: true })} />Days
-              </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="create-form" autoComplete="off">
 
-            <TimeSelector />
-            {daySelectionError && <div>{daySelectionError}</div>}
+            <div className="text-input-container">
+                <input type="text" placeholder="Event Name" name="name" className="event-name-input" ref={register({
+                    required: {
+                        value: true,
+                        message: "You must enter an event name"
+                    }, minLength: {
+                        value: 1,
+                        message: "Event name must be between 1-100 characters long"
+                    }, maxLength: {
+                        value: 100,
+                        message: "Event name must be between 1-100 characters long"
+                    }
+                })} />
+                <div className="error">{(errors.name && errors.name.message) ? errors.name.message : ""}</div>
 
-            {showCal && <select name="timezone" ref={register({ required: true })}>{timezones.map(tz => <option >{tz}</option>)}</select>}
+                <input type="text" placeholder="Description (optional)" name="description" className="event-description-input" ref={register({
+                    maxLength: {
+                        value: 200,
+                        message: "Event description must be less than 200 characters long"
+                    }
+                })} />
 
-            <select name="startTime" ref={register({
-                required: true,
-                validate: validateTimeSelections,
-            })}>
-                <option value="0">midnight</option>
-                <option value="1"> 1 am</option>
-                <option value="2"> 2 am</option>
-                <option value="3"> 3 am</option>
-                <option value="4"> 4 am</option>
-                <option value="5"> 5 am</option>
-                <option value="6"> 6 am</option>
-                <option value="7"> 7 am</option>
-                <option value="8"> 8 am</option>
-                <option value="9"> 9 am</option>
-                <option value="10"> 10 am</option>
-                <option value="11"> 11 am</option>
-                <option value="12"> noon</option>
-                <option value="13"> 1 pm</option>
-                <option value="14"> 2 pm</option>
-                <option value="15"> 3 pm</option>
-                <option value="16"> 4 pm</option>
-                <option value="17"> 5 pm</option>
-                <option value="18"> 6 pm</option>
-                <option value="19"> 7 pm</option>
-                <option value="20"> 8 pm</option>
-                <option value="21"> 9 pm</option>
-                <option value="22"> 10 pm</option>
-                <option value="23"> 11 pm</option>
-                <option value="0"> midnight</option>
-            </select>
-            <select name="endTime" ref={register({
-                required: true,
-                validate: validateTimeSelections,
-            })}>
+                <div className="error">{(errors.description && errors.description.message) ? errors.description.message : ""}</div>
+            </div>
+            <div>
+                <div className="day-selector-container">
+                    <div onChange={onChange}>
+                        Survey Using: <input id="dates" name="surveyUsing" type="radio" value="Dates" style={{ marginLeft: "1rem" }} ref={register({ required: true })} />
+                        <label for="dates" style={{ marginRight: "1rem" }}>Dates</label>
+                        <input id="days" name="surveyUsing" type="radio" value="Days" ref={register({ required: true })} />
+                        <label for="days">Days</label>
+                    </div>
 
-                <option value="0">midnight</option>
-                <option value="1"> 1 am</option>
-                <option value="2"> 2 am</option>
-                <option value="3"> 3 am</option>
-                <option value="4"> 4 am</option>
-                <option value="5"> 5 am</option>
-                <option value="6"> 6 am</option>
-                <option value="7"> 7 am</option>
-                <option value="8"> 8 am</option>
-                <option value="9"> 9 am</option>
-                <option value="10"> 10 am</option>
-                <option value="11"> 11 am</option>
-                <option value="12"> noon</option>
-                <option value="13"> 1 pm</option>
-                <option value="14"> 2 pm</option>
-                <option value="15"> 3 pm</option>
-                <option value="16"> 4 pm</option>
-                <option value="17"> 5 pm</option>
-                <option value="18"> 6 pm</option>
-                <option value="19"> 7 pm</option>
-                <option value="20"> 8 pm</option>
-                <option value="21"> 9 pm</option>
-                <option value="22"> 10 pm</option>
-                <option value="23"> 11 pm</option>
-                <option value="0"> midnight</option>
-            </select>
-            {
-                ((errors.endTime && errors.endTime.type === "validate") ||
-                    errors.startTime && errors.startTime.type === "validate") &&
-                <div className="error">Start time must be before end time!</div>
+                    <TimeSelector />
+                    <div className="error" style={{ textAlign: "center" }}>{(daySelectionError) ? daySelectionError : ""}</div>
+                </div>
+            </div>
+            {showCal &&
+                <div className="time-container">
+                    In <Form.Control as="select" name="timezone" className="select" style = {{maxWidth: "20rem", marginBottom: "1rem"}} ref={register({ required: true })}>
+                        {timezones.map(tz => <option >{tz}</option>)}
+                    </Form.Control>
+                </div>}
 
-            }
-            <input type="submit" value={loading ? "CREATING EVENT!!!" : "Create Event"} />
+            <div className="time-container">
+                From <Form.Control className = "select" as="select" name="startTime" style = {{maxWidth: "8rem", marginRight: "1rem"}} ref={register({
+                    required: true,
+                    validate: validateTimeSelections,
+                })}>
+                    <option value="0">midnight</option>
+                    <option value="1"> 1 am</option>
+                    <option value="2"> 2 am</option>
+                    <option value="3"> 3 am</option>
+                    <option value="4"> 4 am</option>
+                    <option value="5"> 5 am</option>
+                    <option value="6"> 6 am</option>
+                    <option value="7"> 7 am</option>
+                    <option value="8"> 8 am</option>
+                    <option value="9"> 9 am</option>
+                    <option value="10"> 10 am</option>
+                    <option value="11"> 11 am</option>
+                    <option value="12"> noon</option>
+                    <option value="13"> 1 pm</option>
+                    <option value="14"> 2 pm</option>
+                    <option value="15"> 3 pm</option>
+                    <option value="16"> 4 pm</option>
+                    <option value="17"> 5 pm</option>
+                    <option value="18"> 6 pm</option>
+                    <option value="19"> 7 pm</option>
+                    <option value="20"> 8 pm</option>
+                    <option value="21"> 9 pm</option>
+                    <option value="22"> 10 pm</option>
+                    <option value="23"> 11 pm</option>
+                    <option value="0"> midnight</option>
+                </Form.Control>
+                
+                To <Form.Control as="select" name="endTime" className = "select" style = {{maxWidth: "8rem"}} ref={register({
+                    required: true,
+                    validate: validateTimeSelections,
+                })}>
+
+                    <option value="0">midnight</option>
+                    <option value="1"> 1 am</option>
+                    <option value="2"> 2 am</option>
+                    <option value="3"> 3 am</option>
+                    <option value="4"> 4 am</option>
+                    <option value="5"> 5 am</option>
+                    <option value="6"> 6 am</option>
+                    <option value="7"> 7 am</option>
+                    <option value="8"> 8 am</option>
+                    <option value="9"> 9 am</option>
+                    <option value="10"> 10 am</option>
+                    <option value="11"> 11 am</option>
+                    <option value="12"> noon</option>
+                    <option value="13"> 1 pm</option>
+                    <option value="14"> 2 pm</option>
+                    <option value="15"> 3 pm</option>
+                    <option value="16"> 4 pm</option>
+                    <option value="17"> 5 pm</option>
+                    <option value="18"> 6 pm</option>
+                    <option value="19"> 7 pm</option>
+                    <option value="20"> 8 pm</option>
+                    <option value="21"> 9 pm</option>
+                    <option value="22"> 10 pm</option>
+                    <option value="23"> 11 pm</option>
+                    <option value="0"> midnight</option>
+                </Form.Control>
+
+                <div className="error">{
+                    ((errors.endTime && errors.endTime.type === "validate") ||
+                    (errors.startTime && errors.startTime.type === "validate")) ?
+                    "Start time must be before end time!" : ""}</div>
+
+            </div>
+            <input className = "button-important" type="submit" value={loading ? "CREATING EVENT!!!" : "Create Event"} />
         </form>
     );
 }

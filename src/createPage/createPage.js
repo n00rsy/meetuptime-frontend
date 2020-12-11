@@ -1,10 +1,19 @@
 import React from 'react';
 import CreateForm from './createForm'
+import './styles.css'
 
 export default function CreatePage() {
   return (
-    <div className="CreatePage">
-        <CreateForm></CreateForm>
+    <div className="create-form-container">
+      <div class="background">
+        <div style={{ height: "100vh", width: "100vw", overflow: "hidden" }} >
+          <svg viewBox="0 0 500 150" preserveAspectRatio="none" style={{ height: "100%", width: "100%" }}>
+            <path d="M0.00,49.99 C200.56,190.75 349.20,-49.99 500.00,49.99 L500.00,150.00 L0.00,150.00 Z" style={{ stroke: "none", fill: "#d1a7a7" }}>
+            </path>
+          </svg>
+        </div>
+      </div>
+      <CreateForm></CreateForm>
     </div>
   );
 }

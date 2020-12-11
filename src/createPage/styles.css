@@ -1,0 +1,43 @@
+.create-form {
+    padding-top: 2rem;
+    margin: auto;
+    text-align: center;
+    width: 80%;
+}
+.create-form-container {
+    width: 100%;
+}
+
+.event-name-input {
+    font-size: 2.5rem;
+    width: 100%;
+    text-align: center;
+}
+
+.event-description-input {
+    width: 100%;
+    text-align: center;
+}
+
+.text-input-container {
+    display: inline-block;
+}
+
+.day-selector-container {
+    color: white;
+    padding-top: 1rem;
+    background-color: #1C2541;
+    border-radius: 25px;
+    box-shadow: 4px 4px 20px -16px rgba(0,0,0,0.75);
+    display: inline-block;
+    min-width: 25rem;
+    margin-bottom: 1rem;
+}
+
+.select {
+    display: inline;
+}
+.time-container {
+    color: white;
+    font-style: oblique;
+}

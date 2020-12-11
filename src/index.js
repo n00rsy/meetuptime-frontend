@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 import {
   BrowserRouter as Router,
@@ -12,10 +13,24 @@ import {
 
 import CreatePage from './createPage/createPage'
 import ViewPage from './viewPage/viewPage'
+import NavigationBar from './shared/navbar'
+import Footer from './shared/footer'
+
+/*
+<h1>React Router Example</h1>
+    <ul role="nav">
+    <li><Link to="/">Home</Link></li>
+      <li><Link to="/about">About</Link></li>
+      <li><Link to="/howto">How To</Link></li>
+      <li><Link to="/faq">FAQ</Link></li>
+    </ul>
+*/
 
 ReactDOM.render(
   <React.StrictMode>
+
     <Router>
+    <NavigationBar/>
     <Switch>
           <Route exact path="/">
             <CreatePage />
@@ -26,10 +41,15 @@ ReactDOM.render(
           <Route path="/howto">
             <p>HOW TO</p>
           </Route>
+          <Route path="/faq">
+            <p>FAQ</p>
+          </Route>
           <Route>
             <ViewPage/>
           </Route>
         </Switch>
+
+        <Footer />
     </Router>
   </React.StrictMode>,
   document.getElementById('root')
