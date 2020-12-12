@@ -59,7 +59,7 @@ export default function ViewPage() {
                     if (data.surveyUsing === "Dates") data.localTimes = setTimezone(data.days, timezone)
                     console.log("processed data: ", data)
                     setMeetingData(data)
-
+                    return data
                 }
             })
     }
@@ -82,7 +82,7 @@ export default function ViewPage() {
 
     function SignInSignOut() {
         if(userData == null) return <SigninForm meetingData={meetingData} setMeetingData={setMeetingData} userData={userData} setUserData={setUserData} />
-        else return <SignoutForm userData={userData} setUserData={setUserData} getMeeting = {() => getMeeting('/' + meetingData.id)}/>
+        else return <SignoutForm userData={userData} setUserData={setUserData} getMeeting = {() => getMeeting('/' + meetingData.id)} meetingId = {meetingData.id}/>
     }
 
     useEffect(() => handlePath(), [])

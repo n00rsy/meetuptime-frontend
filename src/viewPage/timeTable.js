@@ -36,7 +36,7 @@ function TimeTable({ startingMoment, numTimeslots, surveyUsing }) {
         <table className="time-table">
             <tbody>
                 <tr key = "s" >
-                    <th key = "s" className="time-table-cell" style={{ lineHeight: "4rem", height: surveyUsing === "Dates" ? "3.75rem" : "2rem", width: "120px" }}></th>
+                    <th key = "s" className="time-table-cell" style={{ lineHeight: "4rem", height: surveyUsing === "Dates" ? "3.75rem" : "2.25rem", width: "120px" }}></th>
                 </tr >
                 {timeTable}
             </tbody>

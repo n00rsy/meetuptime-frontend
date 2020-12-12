@@ -10,6 +10,7 @@
 
 .event-name-input {
     font-size: 2.5rem;
+    font-weight: bold;
     width: 100%;
     text-align: center;
 }
@@ -42,3 +43,42 @@
     font-style: oblique;
 }
 
+.days-wrapper {
+    padding-top: 1rem;
+}
+
+.day-container {
+    text-align: center;
+    display: inline-block;
+    padding-left: 1rem;
+}
+
+.day-label {
+    display: block;
+    user-select: none;
+}
+
+.day {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 2rem;
+    height: 7rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: white;
+	display: inline-block;
+    position: relative;
+    transition: 0.3s;
+}
+
+.day:hover {
+    background-color: #c5d3e3;
+}
+
+.day:checked, .day:active, .day:checked:active {
+    background-color: var(--highlight);
+}
+
+.day:checked:hover {
+    background-color: #86dbda;
+}
