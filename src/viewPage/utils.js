@@ -65,9 +65,9 @@ export const map2dArray= (matrix, num) => {
         for (let col = 0; col < matrix[0].length; col++) {
             if(num === 0 || matrix[row][col] === 0) currRow.push("#ffffff")
             else if(num === 1) {
-                currRow.push("#325c35")
+                currRow.push("#3A506B")
             }
-            else currRow.push(lerpColor(0xcde3c8, 0x325c35 , (matrix[row][col]-1)/(num-1)))
+            else currRow.push(lerpColor(0xa5c2e6, 0x3A506B , (matrix[row][col]-1)/(num-1)))
         }
         output.push(currRow)
     }

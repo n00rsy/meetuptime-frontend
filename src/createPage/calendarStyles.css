@@ -113,10 +113,13 @@
   .DayPicker-Day {
     display: table-cell;
     padding: 0.5em;
-    border-radius: 50%;
+    border-radius: 20%;
     vertical-align: middle;
     text-align: center;
     cursor: pointer;
+    width: 2.5rem;
+    height: 2.5rem;
+    transition: 0.2s;
   }
   
   .DayPicker-WeekNumber {
@@ -166,7 +169,6 @@
     cursor: default;
     /* background-color: #eff1f1; */
   }
-  
 
   .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
     position: relative;
@@ -176,12 +178,12 @@
   }
   
   .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover {
-    background-color: #a9c6e8;
+    background-color: #86dbda;
   }
   
   .DayPicker:not(.DayPicker--interactionDisabled)
     .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
-    background-color: #88a8cf;
+    background-color: #5f7999;
   }
   
   /* DayPickerInput */

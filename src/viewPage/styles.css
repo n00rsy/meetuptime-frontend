@@ -9,7 +9,7 @@
   color:#424242;
   font-size: 0.5rem;
   font-style: normal;
-  line-height: 1rem;
+  line-height: 1.5rem;
   height: 1rem;
   border: 1px solid white;
 }
@@ -20,9 +20,11 @@
 .table-header-day {
   color :#424242;
   font-size: 2rem;
+  text-align: center;
 }
 .table-header-date {
   font-size: 1rem;
+  text-align: center;
 }
 .table-drag-select-container {
 
@@ -61,8 +63,8 @@
     border: 1px solid #cacaca;
     border-left: 3px solid #e1e3e6;
     border-right: 3px solid #e1e3e6;
-    width: 100px;
-    min-width: 100px;
+    width: 120px;
+    min-width: 120px;
     height: 1rem;
   }
   

@@ -40,7 +40,8 @@ export default function CreateForm() {
     }
 
     const onSubmit = function (data) {
-
+        data.startTime = parseInt(data.startTime)
+        data.endTime = parseInt(data.endTime)
         console.log("received data: ", data)
         let validDaysSelection = validateDaySelections(data.surveyUsing)
         if (data.surveyUsing === "Dates" && validDaysSelection) {
@@ -78,7 +79,7 @@ export default function CreateForm() {
         })
             .then(res => {
                 setLoading(false)
-                res.json()
+                return res.json()
             })
             .then(data => {
                 console.log(data);
@@ -129,7 +130,7 @@ export default function CreateForm() {
         }
     }
 
-    console.log(errors)
+    //console.log(errors)
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="create-form" autoComplete="off">
 
@@ -160,7 +161,7 @@ export default function CreateForm() {
             <div>
                 <div className="day-selector-container">
                     <div onChange={onChange}>
-                        Survey Using: <input id="dates" name="surveyUsing" type="radio" value="Dates" style={{ marginLeft: "1rem" }} ref={register({ required: true })} />
+                        <span style={{ marginRight: "1rem" }}>Survey Using:</span> <input id="dates" name="surveyUsing" type="radio" value="Dates" style={{ marginLeft: "1rem" }} ref={register({ required: true })} />
                         <label for="dates" style={{ marginRight: "1rem" }}>Dates</label>
                         <input id="days" name="surveyUsing" type="radio" value="Days" ref={register({ required: true })} />
                         <label for="days">Days</label>
@@ -168,20 +169,21 @@ export default function CreateForm() {
 
                     <TimeSelector />
                     <div className="error" style={{ textAlign: "center" }}>{(daySelectionError) ? daySelectionError : ""}</div>
+                    <div className="color-block"></div>
                 </div>
             </div>
             {showCal &&
                 <div className="time-container">
-                    In <Form.Control as="select" name="timezone" className="select" style = {{maxWidth: "20rem", marginBottom: "1rem"}} ref={register({ required: true })}>
+                    In <Form.Control as="select" name="timezone" className="select" style={{ maxWidth: "20rem", marginBottom: "1rem" }} ref={register({ required: true })}>
                         {timezones.map(tz => <option >{tz}</option>)}
                     </Form.Control>
                 </div>}
 
             <div className="time-container">
-                From <Form.Control className = "select" as="select" name="startTime" style = {{maxWidth: "8rem", marginRight: "1rem"}} ref={register({
-                    required: true,
-                    validate: validateTimeSelections,
-                })}>
+                From <Form.Control className="select" as="select" name="startTime" style={{ maxWidth: "8rem", marginRight: "1rem" }} ref={register({
+                required: true,
+                validate: validateTimeSelections,
+            })}>
                     <option value="0">midnight</option>
                     <option value="1"> 1 am</option>
                     <option value="2"> 2 am</option>
@@ -208,8 +210,8 @@ export default function CreateForm() {
                     <option value="23"> 11 pm</option>
                     <option value="0"> midnight</option>
                 </Form.Control>
-                
-                To <Form.Control as="select" name="endTime" className = "select" style = {{maxWidth: "8rem"}} ref={register({
+
+                To <Form.Control as="select" name="endTime" className="select" style={{ maxWidth: "8rem" }} ref={register({
                     required: true,
                     validate: validateTimeSelections,
                 })}>
@@ -243,11 +245,11 @@ export default function CreateForm() {
 
                 <div className="error">{
                     ((errors.endTime && errors.endTime.type === "validate") ||
-                    (errors.startTime && errors.startTime.type === "validate")) ?
-                    "Start time must be before end time!" : ""}</div>
+                        (errors.startTime && errors.startTime.type === "validate")) ?
+                        "Start time must be before end time!" : ""}</div>
 
             </div>
-            <input className = "button-important" type="submit" value={loading ? "CREATING EVENT!!!" : "Create Event"} />
+            <input className="button-important" type="submit" value={loading ? "CREATING EVENT!!!" : "Create Event"} />
         </form>
     );
 }

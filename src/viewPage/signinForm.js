@@ -54,7 +54,7 @@ export default function SigninForm({ meetingData, setMeetingData, setUserData })
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <input type="text" placeholder="username" name="username" ref={register({ required: true, minLength: 1, maxLength: 20 })} />
-            <input type="password" placeholder="password" name="password" ref={register({ required: false, maxLength: 20 })} />
+            <input type="password" placeholder="password (optional)" name="password" ref={register({ required: false, maxLength: 20 })} />
             <input type="submit" value="Login" />
         </form>
     )

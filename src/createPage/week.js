@@ -26,7 +26,6 @@ export default function Week({selectedDays, setSelectedDays}) {
     })
   });
 
-  console.log(errors);
     return (
         <div onChange={onChange}>
       <input type="checkbox" placeholder="Sunday" name="0" ref={register}/>

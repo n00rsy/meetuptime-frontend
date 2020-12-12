@@ -260,7 +260,7 @@ class Cell extends React.Component {
     } = this.props;
 
     let style = {backgroundColor: color}
-    let selectedColor = "#35b57b", deselectedColor = "red"
+    let selectedColor = "var(--highlight)", deselectedColor = "var(--alert)"
 
       className += " cell-enabled";
       if (beingSelected) {
