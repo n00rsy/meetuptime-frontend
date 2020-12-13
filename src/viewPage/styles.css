@@ -1,12 +1,12 @@
 .time-table {
   border-collapse: collapse;
   user-select: none;
+  table-layout: fixed;
+  width: 4rem;
 }
 
 .time-table-cell {
-  min-width: 100px;
-  text-align: right;
-  color:#424242;
+  text-align: center;
   font-size: 0.5rem;
   font-style: normal;
   line-height: 1.5rem;
@@ -33,7 +33,6 @@
   overflow-y:hidden;
 }
 .container {
-  width: 50%;
   display:flex;
   margin-left:auto;
   margin-right:auto;
@@ -66,12 +65,12 @@
     width: 120px;
     min-width: 120px;
     height: 1rem;
-    transition: 0.05s;
+    transition: 0.1s;
   }
   
   /* Cells that can be interacted with */
   .table-drag-select td.cell-enabled {
-    background-color: rgb(255, 255, 255);
+    background-color: white;
     /* Make the cursor a + symbol */
     cursor: cell;
   }
@@ -104,4 +103,34 @@
     
   }
 
-  
+  .group-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .group-header {
+    font-weight: bold;
+  }
+
+  .divider {
+    width: 1px;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    background-color: black;
+  }
+  .header-container {
+    margin: auto;
+    text-align: center;
+    padding-top: 3rem;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .sign-form {
+    padding-top: 3rem;
+  }

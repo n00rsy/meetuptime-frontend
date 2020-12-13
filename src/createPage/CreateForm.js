@@ -158,13 +158,14 @@ export default function CreateForm() {
 
                 <div className="error">{(errors.description && errors.description.message) ? errors.description.message : ""}</div>
             </div>
-            <div>
+            <div style = {{display: "flex", justifyContent: "center"}}>
                 <div className="day-selector-container">
                     <div onChange={onChange}>
                         <span style={{ marginRight: "1rem" }}>Survey Using:</span> <input id="dates" name="surveyUsing" type="radio" value="Dates" style={{ marginLeft: "1rem" }} ref={register({ required: true })} />
                         <label for="dates" style={{ marginRight: "1rem" }}>Dates</label>
                         <input id="days" name="surveyUsing" type="radio" value="Days" ref={register({ required: true })} />
                         <label for="days">Days</label>
+                        <div style = {{paddingTop: "1rem", borderBottom: "1px solid white", width: "70%", margin: "auto"}}></div>
                     </div>
 
                     <TimeSelector />

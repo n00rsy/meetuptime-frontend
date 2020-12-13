@@ -103,15 +103,15 @@ export default function ViewPage() {
     }
 
     return (
-        <div>
+        <div className = "wrapper">
+            <div className = "header-container">
             <h1>{meetingData.name}</h1>
             <h2>{meetingData.description}</h2>
             <SignInSignOut />
-            {<AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} />}
+            </div>
             {meetingData.surveyUsing === "Dates" && <select name="timezone" defaultValue={timezone} onChange={handleTimezone}>{Moment.tz.names().map(tz => <option >{tz}</option>)}</select>}
+            {<AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} />}
             <p>Create your own!</p>
-            <p>Submit feedback</p>
         </div>
     )
-
 }

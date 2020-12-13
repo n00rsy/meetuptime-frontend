@@ -86,7 +86,6 @@ export default class TableDragSelect extends React.Component {
                   selected={false}
                   beingSelected={this.isCellBeingSelected(i, j)}
                   addMode={this.state.addMode}
-                  disabled={true}
                   color={this.props.colors[i][j]}
                   rowNum={i}
                   {...cell.props}
@@ -104,7 +103,6 @@ export default class TableDragSelect extends React.Component {
                   selected={this.props.value[i][j]}
                   beingSelected={this.isCellBeingSelected(i, j)}
                   addMode={this.state.addMode}
-                  disabled={false}
                   color={this.props.colors[i][j]}
                   rowNum={i}
                   {...cell.props}
@@ -121,18 +119,17 @@ export default class TableDragSelect extends React.Component {
     });
 
   handleTouchStartCellViewing = e => {
-    console.log("touch started", e)
+    //console.log("touch started", e)
     const isLeftClick = e.button === 0;
     const isTouch = e.type !== "mousedown";
-    if (isLeftClick || isTouch) {
-      e.preventDefault();
-      let { row, column } = eventToCellLocation(e);
 
-    }
   }
 
   handleTouchMoveCellViewing = e => {
-    console.log("touch moved", e)
+    //console.log("touch moved", e)
+    e.preventDefault()
+    let { row, column } = eventToCellLocation(e);
+    this.props.setCurrentCoords({row: row, col: column})
   }
 
   handleTouchStartCellEditing = e => {
@@ -248,7 +245,6 @@ class Cell extends React.Component {
   render = () => {
     let {
       className = "",
-      disabled,
       beingSelected,
       selected,
       onTouchStart,
@@ -294,15 +290,11 @@ class Cell extends React.Component {
   };
 
   handleTouchStart = e => {
-    if (!this.props.disabled) {
       this.props.onTouchStart(e);
-    }
   };
 
   handleTouchMove = e => {
-    if (!this.props.disabled) {
       this.props.onTouchMove(e);
-    }
   };
 }
 

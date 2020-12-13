@@ -27,7 +27,7 @@
 .day-selector-container {
     color: white;
     padding-top: 1rem;
-    background-color: #1C2541;
+    background-color: var(--third);
     border-radius: 25px;
     box-shadow: 4px 4px 20px -16px rgba(0,0,0,0.75);
     display: inline-block;

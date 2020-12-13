@@ -2,6 +2,7 @@
 
 :root {
   --second: #3A506B;
+  --third: #1C2541;
   --highlight: #5BC0BE;
   --alert: #bf6068;
 }
@@ -41,11 +42,23 @@ input[type="radio"] {
   text-align: center;
 }
 
+.app-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between
+}
+
 .footer {
   background-color: var(--second);
   color: white;
   width: 100%;
   text-align: center;
+  margin-top: 3rem;
+}
+
+.footer-p {
+  padding-top: 1rem;
 }
 
 .background{
@@ -77,11 +90,31 @@ input[type="radio"] {
   transition: 0.3s;
 }
 .button-important:hover {
-  background-color: #86dbda;
+  background-color: #56ccca;
 }
 
 .button-important:focus {
   background-color: #7777a8;
+}
+
+.button-secondary {
+  background-color: var(--alert);
+  border: none;
+  color: white;
+  padding: 0rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1rem;
+  border-radius: 2rem;
+  transition: 0.3s;
+}
+.button-secondary:hover {
+  background-color: #c76f77;
+}
+
+.button-secondary:focus {
+  background-color: #8a6669;
 }
 
 [type="radio"]:checked,

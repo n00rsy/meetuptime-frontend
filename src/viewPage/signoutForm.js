@@ -42,8 +42,8 @@ export default function SignoutForm({userData, setUserData, getMeeting, meetingI
     }
 
     return (
-        <div>
-            <p>Signed in as {userData.name}</p>
+        <div className = "sign-form">
+            <p>Signed in as <span style = {{fontWeight: "bold"}}>{userData.name}</span></p>
             <button value="signout" onClick={signout} >sign out</button>
             <button value="delete" onClick={deleteResponse} >delete response</button>
         </div>

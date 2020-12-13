@@ -30,8 +30,9 @@ ReactDOM.render(
   <React.StrictMode>
 
     <Router>
-    <NavigationBar/>
-    <Switch>
+      <NavigationBar />
+      <div className="app-wrapper">
+        <Switch>
           <Route exact path="/">
             <CreatePage />
           </Route>
@@ -45,11 +46,11 @@ ReactDOM.render(
             <p>FAQ</p>
           </Route>
           <Route>
-            <ViewPage/>
+            <ViewPage />
           </Route>
         </Switch>
-
         <Footer />
+      </div>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')

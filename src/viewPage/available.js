@@ -1,17 +1,20 @@
 import React, { useState, useMemo } from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 
 import TableDragSelect from "./table";
 import MemoizedTimeTable from "./timeTable"
 import { convert2dTo1dArray } from './utils'
+import GroupAvailable from './groupAvailable'
 
 import './styles.css'
 
 export default function AvailabilityTable({ meetingData, userData, setUserData }) {
 
     const [saving, setSaving] = useState(false)
+    const [currentCoords, setCurrentCoords] = useState(null)
     let handleChange = cells => {
         //console.log("new cells: ", cells)
-        setUserData({...userData, available: cells });
+        setUserData({ ...userData, available: cells });
     }
 
     function save() {
@@ -46,31 +49,43 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
         for (let time = 0; time < numTimeslots; time++) {
             let currRow = []
             for (let day = 0; day < numDays; day++) {
-                currRow.push(<td key = {day}></td>)
+                currRow.push(<td key={day}></td>)
             }
             table.push(<tr key={time}>{currRow}</tr>)
         }
         return table
     }
 
-    let startingMoment = meetingData.surveyUsing === "Dates" ? meetingData.localTimes[0].format("h") : meetingData.startTime
+    let startingMoment = meetingData.surveyUsing === "Dates" ? meetingData.localTimes[0].format("H") : meetingData.startTime
     const table = useMemo(() => generateTableCells(meetingData.numTimeslots, meetingData.numDays), [meetingData.numTimeslots, meetingData.numDays])
     return (
         <div>
-            <div className="container">
-                <MemoizedTimeTable startingMoment={startingMoment} numTimeslots={meetingData.numTimeslots} surveyUsing={meetingData.surveyUsing} />
-
-                <TableDragSelect 
-                value={userData === null ? null : userData.available} 
-                onChange={handleChange} 
-                days={meetingData.surveyUsing === "Dates" ? meetingData.localTimes : meetingData.days}
-                colors={meetingData.colors}
-                >
-                    {table}
-                </TableDragSelect>
-            </div>
+            <Container>
+                <Row>
+                    <Col>
+                        <div className="container">
+                            <MemoizedTimeTable startingMoment={startingMoment} numTimeslots={meetingData.numTimeslots} surveyUsing={meetingData.surveyUsing} />
+                            <TableDragSelect
+                                value={userData === null ? null : userData.available}
+                                onChange={handleChange}
+                                days={meetingData.surveyUsing === "Dates" ? meetingData.localTimes : meetingData.days}
+                                colors={meetingData.colors}
+                                setCurrentCoords = {setCurrentCoords}>
+                                {table}
+                            </TableDragSelect>
+                        </div>
+                    </Col>
+                    <Col><div>Legend</div></Col>
+                    <Col>
+                    <GroupAvailable 
+                        numRespondants = {meetingData.numRespondants} 
+                        people = {meetingData.people} 
+                        currentCoords = {currentCoords} />
+                    </Col>
+                </Row>
+            </Container>
             <div className="container-bottom">
-                <button value="Save" onClick={save} className="myButton">{saving ? "SAVING..." : " Save"}</button>
+                <button className="button-important" value="Save" onClick={save}>{saving ? "SAVING..." : " Save"}</button>
             </div>
         </div>
     )

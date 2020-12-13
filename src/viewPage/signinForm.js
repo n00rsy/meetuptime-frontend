@@ -4,7 +4,7 @@ import { convert1dTo2dArray, subtract2dArrays, map2dArray } from './utils'
 
 export default function SigninForm({ meetingData, setMeetingData, setUserData }) {
 
-    const { register, handleSubmit } = useForm()
+    const { register, errors, handleSubmit } = useForm()
 
     function onSubmit(userInfo) {
 
@@ -22,7 +22,7 @@ export default function SigninForm({ meetingData, setMeetingData, setUserData })
         })
             .then(res => {
                 console.log('raw server login response: ', res)
-                return res.status / 100 != 2  ? res : res.json()
+                return res.status / 100 != 2 ? res : res.json()
             })
             .then(data => {
                 console.log("processed login data", data)
@@ -51,10 +51,30 @@ export default function SigninForm({ meetingData, setMeetingData, setUserData })
             })
     }
 
+    console.log(errors)
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <input type="text" placeholder="username" name="username" ref={register({ required: true, minLength: 1, maxLength: 20 })} />
-            <input type="password" placeholder="password (optional)" name="password" ref={register({ required: false, maxLength: 20 })} />
+        <form className = "sign-form" onSubmit={handleSubmit(onSubmit)}>
+            <p style = {{width: "25rem"}}>New to this event? Make up a name and password. Returning? Use the same name/ password.</p>
+            <input type="text" placeholder="Name" name="username" ref={register({ 
+                required: {
+                    value: true,
+                    message: "Please enter a name to sign in."
+                }, 
+                minLength: {
+                    value: 1,
+                    message: "Name must be between 1-20 characters long."
+                },
+                maxLength: {
+                    value: 20,
+                    message: "Name must be between 1-20 characters long." } })} />
+                <div className="error">{(errors.username && errors.username.message) ? errors.username.message : ""}</div>
+            <input type="password" placeholder="Password (optional)" name="password" ref={register({ 
+                required:false, 
+                maxLength: {
+                    value: 20,
+                    message: "Password must be less than 20 characters long." } })} />
+                    <div className="error">{(errors.password && errors.password.message) ? errors.password.message : ""}</div>
             <input type="submit" value="Login" />
         </form>
     )

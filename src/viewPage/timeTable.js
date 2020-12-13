@@ -24,7 +24,12 @@ function TimeTable({ startingMoment, numTimeslots, surveyUsing }) {
             if (time % 4 === 0 || time === last) {
                 let currentTime = hoursMoment.format("h:mm A")
                 //console.log("sending time: ", currentTime)
-                timeTable.push(<TimeTableCell time={currentTime} count = {time} style={{borderTop: "3px solid white",fontSize:"0.7rem", lineHeight: "1.5rem"}}/>)
+                timeTable.push(<TimeTableCell time={currentTime} count = {time} style={{
+                    borderTop: "3px solid white",
+                    fontSize:"0.7rem", 
+                    lineHeight: "1.5rem",
+            }}/>)
+
                 hoursMoment.add(1, 'hours')
             }
             else {
@@ -36,7 +41,7 @@ function TimeTable({ startingMoment, numTimeslots, surveyUsing }) {
         <table className="time-table">
             <tbody>
                 <tr key = "s" >
-                    <th key = "s" className="time-table-cell" style={{ lineHeight: "4rem", height: surveyUsing === "Dates" ? "3.75rem" : "2.25rem", width: "120px" }}></th>
+                    <th key = "s" className="time-table-cell" style={{ lineHeight: "4rem", height: surveyUsing === "Dates" ? "3.75rem" : "2.25rem" }}></th>
                 </tr >
                 {timeTable}
             </tbody>
