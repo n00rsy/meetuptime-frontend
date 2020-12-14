@@ -54,7 +54,7 @@ export default function SigninForm({ meetingData, setMeetingData, setUserData })
     console.log(errors)
 
     return (
-        <form className = "sign-form" onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <p style = {{width: "25rem"}}>New to this event? Make up a name and password. Returning? Use the same name/ password.</p>
             <input type="text" placeholder="Name" name="username" ref={register({ 
                 required: {
@@ -75,7 +75,7 @@ export default function SigninForm({ meetingData, setMeetingData, setUserData })
                     value: 20,
                     message: "Password must be less than 20 characters long." } })} />
                     <div className="error">{(errors.password && errors.password.message) ? errors.password.message : ""}</div>
-            <input type="submit" value="Login" />
+            <input type="submit" value="Login" className = "button-sign" />
         </form>
     )
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
+import { Form, FormControl } from 'react-bootstrap'
 
 import SigninForm from './signinForm'
 import SignoutForm from './signoutForm'
@@ -81,8 +82,8 @@ export default function ViewPage() {
     }
 
     function SignInSignOut() {
-        if(userData == null) return <SigninForm meetingData={meetingData} setMeetingData={setMeetingData} userData={userData} setUserData={setUserData} />
-        else return <SignoutForm userData={userData} setUserData={setUserData} getMeeting = {() => getMeeting('/' + meetingData.id)} meetingId = {meetingData.id}/>
+        if (userData == null) return <SigninForm meetingData={meetingData} setMeetingData={setMeetingData} userData={userData} setUserData={setUserData} />
+        else return <SignoutForm userData={userData} setUserData={setUserData} getMeeting={() => getMeeting('/' + meetingData.id)} meetingId={meetingData.id} />
     }
 
     useEffect(() => handlePath(), [])
@@ -103,15 +104,22 @@ export default function ViewPage() {
     }
 
     return (
-        <div className = "wrapper">
-            <div className = "header-container">
-            <h1>{meetingData.name}</h1>
-            <h2>{meetingData.description}</h2>
-            <SignInSignOut />
+        <div className="wrapper">
+            <div className="header-container">
+                <h1 >{meetingData.name}</h1>
+                <h2 >{meetingData.description}</h2>
+                <div className = "sign-form">
+                <SignInSignOut />
+                </div>
+                {meetingData.surveyUsing === "Dates" && <div>
+                    <span style={{ paddingRight: "1rem" }}>Your timezone:</span>
+                    <Form.Control as="select" style={{ maxWidth: "20rem", display: "inline" }} name="timezone" defaultValue={timezone} onChange={handleTimezone}>
+                        {Moment.tz.names().map(tz => <option >{tz}</option>)}
+                    </Form.Control>
+                </div>}
             </div>
-            {meetingData.surveyUsing === "Dates" && <select name="timezone" defaultValue={timezone} onChange={handleTimezone}>{Moment.tz.names().map(tz => <option >{tz}</option>)}</select>}
             {<AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} />}
-            <p>Create your own!</p>
+            <a style = {{color: "var(--highlight)", paddingTop: "1.5rem", width: "10rem", margin: "auto"}} href = "/">Create Your Own</a>
         </div>
     )
 }

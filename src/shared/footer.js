@@ -5,7 +5,7 @@ export default function Footer() {
         <div className = "footer">
             <p className = "footer-p">Like meetuptime? Hit us with a FAT Donation</p>
             <button className = "button-secondary">Donate</button>
-            <p className = "footer-p" >Think we can do better? <a style = {{color: "#5BC0BE"}} href="http://google.com/" target="_blank">Submit feedback</a></p>
+            <p className = "footer-p" >Think we can do better? <a style = {{color: "#5BC0BE"}} href="https://docs.google.com/forms/d/e/1FAIpQLScVYq6mIZ4e7V7uCpYZtcBd3OEpeCYMXVRI3cDlJcBs8UtYVg/viewform?usp=sf_link" target="_blank">Submit feedback</a></p>
         </div>
     )
 }

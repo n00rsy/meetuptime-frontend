@@ -58,7 +58,7 @@ export const initialize2dIntArray = (numRows, numCols) => {
 }
 
 export const map2dArray= (matrix, num) => {
-    console.log("mapping matrix to this many respondants: ", num)
+    console.log("mapping matrix to this many respondents: ", num)
     let output = []
     for (let row = 0; row < matrix.length; row++) {
         let currRow = []
@@ -67,7 +67,7 @@ export const map2dArray= (matrix, num) => {
             else if(num === 1) {
                 currRow.push("#3A506B")
             }
-            else currRow.push(lerpColor(0xa5c2e6, 0x3A506B , (matrix[row][col]-1)/(num-1)))
+            else currRow.push(lerpColor(0xb5d1f5, 0x3A506B , (matrix[row][col]-1)/(num-1)))
         }
         output.push(currRow)
     }

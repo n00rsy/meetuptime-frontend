@@ -23,7 +23,7 @@ export default function SignoutForm({userData, setUserData, getMeeting, meetingI
             body: JSON.stringify(data)
         })
             .then(res => {
-                console.log('raw server login response: ', res, (Math.floor(res.status / 100)))
+                console.log('raw server login response: ', res)
                 return Math.floor(res.status / 100) != 2 ? null : res
             })
             .then(data => {
@@ -42,10 +42,10 @@ export default function SignoutForm({userData, setUserData, getMeeting, meetingI
     }
 
     return (
-        <div className = "sign-form">
+        <div>
             <p>Signed in as <span style = {{fontWeight: "bold"}}>{userData.name}</span></p>
-            <button value="signout" onClick={signout} >sign out</button>
-            <button value="delete" onClick={deleteResponse} >delete response</button>
+            <button className = "button-sign" value="signout" onClick={signout} >sign out</button>
+            <button className = "button-text" value="delete" onClick={deleteResponse} >delete response</button>
         </div>
     )
 }

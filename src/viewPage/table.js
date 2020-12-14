@@ -37,7 +37,7 @@ export default class TableDragSelect extends React.Component {
   render = () => {
     return (
       <div className="table-drag-select-container">
-        <table className="table-drag-select">
+        <table className="table-drag-select" onMouseLeave = {this.handleMouseLeave}>
           <thead>
             {this.renderHeader()}
           </thead>
@@ -130,6 +130,11 @@ export default class TableDragSelect extends React.Component {
     e.preventDefault()
     let { row, column } = eventToCellLocation(e);
     this.props.setCurrentCoords({row: row, col: column})
+  }
+
+  handleMouseLeave = () => {
+    console.log("mouse left")
+    this.props.setCurrentCoords(null)
   }
 
   handleTouchStartCellEditing = e => {
@@ -260,7 +265,7 @@ class Cell extends React.Component {
 
       className += " cell-enabled";
       if (beingSelected) {
-        if (addMode) style.backgroundColor = selectedColor
+        if (addMode) style.backgroundColor = "#24d1ce"
         else style.backgroundColor = deselectedColor
       }
       else if (selected) {

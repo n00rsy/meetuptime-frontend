@@ -5,6 +5,7 @@ import TableDragSelect from "./table";
 import MemoizedTimeTable from "./timeTable"
 import { convert2dTo1dArray } from './utils'
 import GroupAvailable from './groupAvailable'
+import Legend from './legend'
 
 import './styles.css'
 
@@ -60,8 +61,9 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
     const table = useMemo(() => generateTableCells(meetingData.numTimeslots, meetingData.numDays), [meetingData.numTimeslots, meetingData.numDays])
     return (
         <div>
-            <Container>
+            <Container fluid>
                 <Row>
+                    {meetingData.numRespondents > 0 && <Col><Legend numRespondents = {meetingData.numRespondents} /></Col>}
                     <Col>
                         <div className="container">
                             <MemoizedTimeTable startingMoment={startingMoment} numTimeslots={meetingData.numTimeslots} surveyUsing={meetingData.surveyUsing} />
@@ -70,22 +72,21 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
                                 onChange={handleChange}
                                 days={meetingData.surveyUsing === "Dates" ? meetingData.localTimes : meetingData.days}
                                 colors={meetingData.colors}
-                                setCurrentCoords = {setCurrentCoords}>
+                                setCurrentCoords={setCurrentCoords}>
                                 {table}
                             </TableDragSelect>
                         </div>
                     </Col>
-                    <Col><div>Legend</div></Col>
                     <Col>
-                    <GroupAvailable 
-                        numRespondants = {meetingData.numRespondants} 
-                        people = {meetingData.people} 
-                        currentCoords = {currentCoords} />
+                        <GroupAvailable
+                            numRespondents={meetingData.numRespondents}
+                            people={meetingData.people}
+                            currentCoords={currentCoords} />
                     </Col>
                 </Row>
             </Container>
             <div className="container-bottom">
-                <button className="button-important" value="Save" onClick={save}>{saving ? "SAVING..." : " Save"}</button>
+                { userData &&<button style = {{marginTop: "2rem"}} className="button-important" value="Save" onClick={save}>{saving ? "SAVING..." : " Save"}</button>}
             </div>
         </div>
     )
