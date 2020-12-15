@@ -118,7 +118,7 @@ export default function ViewPage() {
                     </Form.Control>
                 </div>}
             </div>
-            {<AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} />}
+            {<AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} getMeeting={getMeeting} />}
             <a style = {{color: "var(--highlight)", paddingTop: "1.5rem", width: "10rem", margin: "auto"}} href = "/">Create Your Own</a>
         </div>
     )

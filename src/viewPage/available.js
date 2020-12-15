@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 
 import TableDragSelect from "./table";
@@ -7,16 +7,25 @@ import { convert2dTo1dArray } from './utils'
 import GroupAvailable from './groupAvailable'
 import Legend from './legend'
 
+import edit from '../img/edit.png'
+import view from '../img/view.png'
 import './styles.css'
 
-export default function AvailabilityTable({ meetingData, userData, setUserData }) {
+export default function AvailabilityTable({ meetingData, userData, setUserData, getMeeting }) {
 
     const [saving, setSaving] = useState(false)
     const [currentCoords, setCurrentCoords] = useState(null)
+    const [editing, setEditing] = useState(userData !== null)
+
     let handleChange = cells => {
         //console.log("new cells: ", cells)
         setUserData({ ...userData, available: cells });
     }
+
+    useEffect(() => {
+        if (userData === null) setEditing(false)
+        else setEditing(true)
+    }, [userData])
 
     function save() {
         setSaving(true)
@@ -39,9 +48,18 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
             .then(res => {
                 setSaving(false)
                 console.log('raw server response: ', res)
-                return res.status === 204
+                if (res.status === 204) {
+                    getMeeting('/' + meetingData.id)
+                    return true
+                }
+                return false
             })
 
+    }
+
+    function toggleEditing() {
+        console.log("toggling editing!")
+        setEditing(!editing)
     }
 
     function generateTableCells(numTimeslots, numDays) {
@@ -63,30 +81,40 @@ export default function AvailabilityTable({ meetingData, userData, setUserData }
         <div>
             <Container fluid>
                 <Row>
-                    {meetingData.numRespondents > 0 && <Col><Legend numRespondents = {meetingData.numRespondents} /></Col>}
+                    <Col>
+                        {meetingData.numRespondents > 0 && <Legend numRespondents={meetingData.numRespondents} />}
+                    </Col>
                     <Col>
                         <div className="container">
+                        <button className="toggle-button"
+                            onClick={toggleEditing} disabled={!userData}><img style={{ width: "1.5rem", height: "auto" }} src={editing ? view : edit}></img></button>
                             <MemoizedTimeTable startingMoment={startingMoment} numTimeslots={meetingData.numTimeslots} surveyUsing={meetingData.surveyUsing} />
                             <TableDragSelect
                                 value={userData === null ? null : userData.available}
                                 onChange={handleChange}
                                 days={meetingData.surveyUsing === "Dates" ? meetingData.localTimes : meetingData.days}
                                 colors={meetingData.colors}
-                                setCurrentCoords={setCurrentCoords}>
+                                setCurrentCoords={setCurrentCoords}
+                                currentCoords={currentCoords}
+                                editing={editing}>
                                 {table}
                             </TableDragSelect>
+
                         </div>
+                        {userData && <button style={{ marginTop: "2rem" }} className="button-important" value="Save" onClick={save}>{saving ? "SAVING..." : " Save Response"}</button>}
                     </Col>
                     <Col>
                         <GroupAvailable
                             numRespondents={meetingData.numRespondents}
                             people={meetingData.people}
-                            currentCoords={currentCoords} />
+                            currentCoords={currentCoords}
+                            moments={meetingData.surveyUsing === 'Dates' ? meetingData.localTimes : { days: meetingData.days, startTime: meetingData.startTime }}
+                            surveyUsing={meetingData.surveyUsing} />
                     </Col>
                 </Row>
             </Container>
             <div className="container-bottom">
-                { userData &&<button style = {{marginTop: "2rem"}} className="button-important" value="Save" onClick={save}>{saving ? "SAVING..." : " Save"}</button>}
+
             </div>
         </div>
     )

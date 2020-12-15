@@ -47,13 +47,11 @@ export default function CreateForm() {
         if (data.surveyUsing === "Dates" && validDaysSelection) {
             data.dates = processDates(selectedDates, data.startTime, data.timezone)
             data.days = []
-            console.log("sending data!!!!")
             sendMeeting(data)
         }
         else if (data.surveyUsing === "Days" && validDaysSelection) {
             data.days = selectedDays
             data.dates = []
-            console.log("sending data!!!!")
             sendMeeting(data)
         }
     }
@@ -80,6 +78,9 @@ export default function CreateForm() {
             .then(res => {
                 setLoading(false)
                 return res.json()
+            })
+            .catch(() => {
+                setDaySelectionError("Unable to create event :( Please try again later.")
             })
             .then(data => {
                 console.log(data);

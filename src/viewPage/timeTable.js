@@ -8,7 +8,7 @@ function TimeTable({ startingMoment, numTimeslots, surveyUsing }) {
     function TimeTableCell({time, count, style = {} }) {
         return (
             <tr key = {count}>
-                <th className="time-table-cell" style={style}>{time}</th>
+                <th className="time-table-cell" style={style}><span>{time === "" ? '\u00A0' : time}</span></th>
             </tr>
         )
     }
@@ -26,8 +26,6 @@ function TimeTable({ startingMoment, numTimeslots, surveyUsing }) {
                 //console.log("sending time: ", currentTime)
                 timeTable.push(<TimeTableCell time={currentTime} count = {time} style={{
                     borderTop: "3px solid white",
-                    fontSize:"0.7rem", 
-                    lineHeight: "1.5rem",
             }}/>)
 
                 hoursMoment.add(1, 'hours')
@@ -41,7 +39,7 @@ function TimeTable({ startingMoment, numTimeslots, surveyUsing }) {
         <table className="time-table">
             <tbody>
                 <tr key = "s" >
-                    <th key = "s" className="time-table-cell" style={{ lineHeight: "4rem", height: surveyUsing === "Dates" ? "3.75rem" : "2.25rem" }}></th>
+                    <th key = "s" className="time-table-cell" style={{height: surveyUsing === "Dates" ? "3.75rem" : "2.45rem" }}></th>
                 </tr >
                 {timeTable}
             </tbody>

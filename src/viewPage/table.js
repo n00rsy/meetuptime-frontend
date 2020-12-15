@@ -77,14 +77,14 @@ export default class TableDragSelect extends React.Component {
       return (
         <tr key={i} {...tr.props}>
           {React.Children.map(tr.props.children, (cell, j) => {
-            if (this.props.value === null) {
+            if (!this.props.editing || this.props.value === null) {
               return (
                 <Cell
                   key={j}
                   onTouchStart={this.handleTouchStartCellViewing}
                   onTouchMove={this.handleTouchMoveCellViewing}
                   selected={false}
-                  beingSelected={this.isCellBeingSelected(i, j)}
+                  beingSelected={this.isCellBeingSelectedViewing(i, j)}
                   addMode={this.state.addMode}
                   color={this.props.colors[i][j]}
                   rowNum={i}
@@ -122,7 +122,7 @@ export default class TableDragSelect extends React.Component {
     //console.log("touch started", e)
     const isLeftClick = e.button === 0;
     const isTouch = e.type !== "mousedown";
-
+    if (isLeftClick || isTouch) e.preventDefault();
   }
 
   handleTouchMoveCellViewing = e => {
@@ -130,6 +130,7 @@ export default class TableDragSelect extends React.Component {
     e.preventDefault()
     let { row, column } = eventToCellLocation(e);
     this.props.setCurrentCoords({row: row, col: column})
+    if(this.state.addMode) this.setState({addMode: false})
   }
 
   handleMouseLeave = () => {
@@ -221,7 +222,16 @@ export default class TableDragSelect extends React.Component {
         column <= maxColumn)
     );
   };
+
+  isCellBeingSelectedViewing = (row, column) => {
+     
+    return (this.props.currentCoords &&
+      (row === this.props.currentCoords.row &&
+        column === this.props.currentCoords.col)
+    )
+  }
 }
+
 
 class Cell extends React.Component {
   // This optimization gave a 10% performance boost while drag-selecting
@@ -279,7 +289,7 @@ class Cell extends React.Component {
     if(rowNum % 4 === 0) {
       style.borderTop = "3px solid #e1e3e6"
     }
-
+//e1e3e6
     return (
       <td
         ref={td => (this.td = td)}
