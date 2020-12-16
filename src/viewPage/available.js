@@ -29,6 +29,7 @@ export default function AvailabilityTable({ meetingData, userData, setUserData, 
 
     function save() {
         setSaving(true)
+        setEditing(false)
         let data = {
             name: userData.name,
             available: convert2dTo1dArray(userData.available)
@@ -75,6 +76,13 @@ export default function AvailabilityTable({ meetingData, userData, setUserData, 
         return table
     }
 
+    function ToggleButton() {
+        return (
+            <button className="toggle-button"
+                onClick={toggleEditing} disabled={!userData}><img style={{ width: "1.5rem", height: "1.5rem" }} src={editing ? view : edit}></img></button>
+        )
+    }
+
     let startingMoment = meetingData.surveyUsing === "Dates" ? meetingData.localTimes[0].format("H") : meetingData.startTime
     const table = useMemo(() => generateTableCells(meetingData.numTimeslots, meetingData.numDays), [meetingData.numTimeslots, meetingData.numDays])
     return (
@@ -85,10 +93,9 @@ export default function AvailabilityTable({ meetingData, userData, setUserData, 
                         {meetingData.numRespondents > 0 && <Legend numRespondents={meetingData.numRespondents} />}
                     </Col>
                     <Col>
+                    <ToggleButton />
                         <div className="container">
-                        <button className="toggle-button"
-                            onClick={toggleEditing} disabled={!userData}><img style={{ width: "1.5rem", height: "auto" }} src={editing ? view : edit}></img></button>
-                            <MemoizedTimeTable startingMoment={startingMoment} numTimeslots={meetingData.numTimeslots} surveyUsing={meetingData.surveyUsing} />
+                            <MemoizedTimeTable startingMoment={startingMoment} numTimeslots={meetingData.numTimeslots} surveyUsing={meetingData.surveyUsing} ToggleButton = {ToggleButton} />
                             <TableDragSelect
                                 value={userData === null ? null : userData.available}
                                 onChange={handleChange}

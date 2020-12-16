@@ -5,7 +5,7 @@ export default function NavigationBar() {
 
     return (
         <Navbar bg="light" expand="lg">
-  <Navbar.Brand href="/">meetuptime</Navbar.Brand>
+  <Navbar.Brand href="/">whenmeet.io</Navbar.Brand>
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="mr-auto" activeKey={window.location.pathname}>

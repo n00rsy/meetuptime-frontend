@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react"
 import { useForm } from 'react-hook-form'
 import { useHistory } from "react-router-dom"
 import Moment from 'moment-timezone'
-
 import { Form } from 'react-bootstrap'
 
 import Calendar from './calendar'
 import Week from './week'
+import CONFIG from '../config.json'
 
 let timezones = Moment.tz.names()
 
@@ -64,11 +64,10 @@ export default function CreateForm() {
             setShowCal(false)
         }
     }
-
     function sendMeeting(meeting) {
         console.log("sending post request with: ", meeting)
         setLoading(true)
-        fetch('/api/meetings', {
+        fetch(CONFIG.backendApi + '/api/meetings', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,6 +75,7 @@ export default function CreateForm() {
             body: JSON.stringify(meeting)
         })
             .then(res => {
+                console.log("raw server response:", res)
                 setLoading(false)
                 return res.json()
             })

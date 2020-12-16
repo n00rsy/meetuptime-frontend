@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { Form, FormControl } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
+import { isMobile } from "react-device-detect";
+import Moment from 'moment-timezone'
 
 import SigninForm from './signinForm'
 import SignoutForm from './signoutForm'
 import AvailabilityTable from './available'
 import { convert1dTo2dArray, initialize2dIntArray, add2dArrays, map2dArray } from './utils'
-import Moment from 'moment-timezone'
+import loading from '../img/loading.gif'
 
 export default function ViewPage() {
 
@@ -14,6 +16,7 @@ export default function ViewPage() {
     const [userData, setUserData] = useState(null)
     const [timezone, _setTimezone] = useState(Moment.tz.guess())
     const [fetchErr, setFetchErr] = useState(false)
+    const [copied, setCopied] = useState(false)
 
     const location = useLocation()
     const history = useHistory()
@@ -99,17 +102,70 @@ export default function ViewPage() {
 
     if (meetingData == null) {
         return (
-            <p>Loading...</p>
+            <div className="wrapper">
+                <div className="background">
+                    <Background />
+                </div>
+                <div className="loading-wrapper">
+                    <h4>Loading Event...</h4>
+                    <img src={loading}></img>
+                </div>
+            </div>
+        )
+    }
+    function Background() {
+        if (isMobile) {
+            return (
+                <div style={{ height: "60vh", width: "100%", backgroundColor: "#d1a7a7", overflow: "hidden" }} />
+            )
+        }
+        return (
+            <div style={{ height: "100vh", width: "100%", overflow: "hidden" }} >
+                <svg viewBox="0 0 500 150" preserveAspectRatio="none" style={{ height: "100%", width: "100%" }}>
+                    <path d="M-3.72,74.30 C161.62,106.88 289.16,34.82 524.49,91.07 L500.00,0.00 L0.00,0.00 Z" style={{ stroke: "none", fill: "#d1a7a7" }}>
+                    </path>
+                </svg>
+            </div>
+        )
+    }
+
+    function shareMeeting() {
+        let shareData = {
+            url: "https://whenmeet.io/" + meetingData.code,
+            title: meetingData.name
+        }
+        console.log("sharing meeting", shareData)
+        navigator.clipboard.writeText(shareData.url).then(function () {
+            setCopied(true)
+        }, function () {
+
+        });
+    }
+
+    function Share() {
+        return (
+            <div>
+                <h6 style={{ fontWeight: "normal" }}>
+                    Event Link: <span onClick={shareMeeting} className={"share"}>{"whenmeet.io/" + meetingData.code}</span>
+                </h6>
+                <div style={{ opacity: copied ? "1" : "0", marginTop: "1rem", paddingBottom: "1rem", fontWeight: "bold", fontStyle: "italic" }}>Link Copied!</div>
+            </div>
         )
     }
 
     return (
         <div className="wrapper">
+            <div className="background">
+                <Background />
+            </div>
             <div className="header-container">
-                <h1 >{meetingData.name}</h1>
-                <h2 >{meetingData.description}</h2>
-                <div className = "sign-form">
-                <SignInSignOut />
+                <div className = "title-container">
+                    <h1 >{meetingData.name}</h1>
+                    <h2 >{meetingData.description}</h2>
+                    <Share />
+                </div>
+                <div className="sign-form">
+                    <SignInSignOut />
                 </div>
                 {meetingData.surveyUsing === "Dates" && <div>
                     <span style={{ paddingRight: "1rem" }}>Your timezone:</span>
@@ -119,7 +175,7 @@ export default function ViewPage() {
                 </div>}
             </div>
             {<AvailabilityTable meetingData={meetingData} userData={userData} setUserData={setUserData} getMeeting={getMeeting} />}
-            <a style = {{color: "var(--highlight)", paddingTop: "1.5rem", width: "10rem", margin: "auto"}} href = "/">Create Your Own</a>
+            <a style={{ color: "var(--highlight)", paddingTop: "1.5rem", width: "10rem", margin: "auto" }} href="/">Create Your Own</a>
         </div>
     )
 }

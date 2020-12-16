@@ -22,7 +22,7 @@ export default function SigninForm({ meetingData, setMeetingData, setUserData })
         })
             .then(res => {
                 console.log('raw server login response: ', res)
-                return res.status / 100 != 2 ? res : res.json()
+                return res.status / 100 !== 2 ? res : res.json()
             })
             .then(data => {
                 console.log("processed login data", data)

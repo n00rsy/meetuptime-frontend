@@ -1,5 +1,5 @@
 {
-  "name": "meetuptime",
+  "name": "whenmeet",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,6 +13,7 @@
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-day-picker": "^7.4.8",
+    "react-device-detect": "^1.14.0",
     "react-dom": "^17.0.1",
     "react-grid-system": "^7.1.1",
     "react-hook-form": "^6.11.5",
@@ -47,5 +48,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:49165"
+  "proxy": "http://localhost:49154"
 }

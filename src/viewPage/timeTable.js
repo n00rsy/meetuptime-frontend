@@ -34,12 +34,12 @@ function TimeTable({ startingMoment, numTimeslots, surveyUsing }) {
                 timeTable.push(<TimeTableCell count = {time} time=""/>)
             }
         }
-    
+    let height = surveyUsing === "Dates" ? "3.9rem" : "2.45rem"
     return (
         <table className="time-table">
             <tbody>
                 <tr key = "s" >
-                    <th key = "s" className="time-table-cell" style={{height: surveyUsing === "Dates" ? "3.75rem" : "2.45rem" }}></th>
+                    <th key = "s" className="time-table-cell" style={{height: height, minHeight: height }}></th>
                 </tr >
                 {timeTable}
             </tbody>

@@ -24,7 +24,7 @@ export default function SignoutForm({userData, setUserData, getMeeting, meetingI
         })
             .then(res => {
                 console.log('raw server login response: ', res)
-                return Math.floor(res.status / 100) != 2 ? null : res
+                return Math.floor(res.status / 100) !== 2 ? null : res
             })
             .then(data => {
                 if (data === null) {

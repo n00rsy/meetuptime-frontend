@@ -1,6 +1,5 @@
 import React from "react";
 import clone from "clone";
-import PropTypes from "prop-types";
 
 export default class TableDragSelect extends React.Component {
 
@@ -19,7 +18,7 @@ export default class TableDragSelect extends React.Component {
     startColumn: null,
     endRow: null,
     endColumn: null,
-    addMode: null
+    addMode: false
   };
 
   componentDidMount = () => {
@@ -37,7 +36,7 @@ export default class TableDragSelect extends React.Component {
   render = () => {
     return (
       <div className="table-drag-select-container">
-        <table className="table-drag-select" onMouseLeave = {this.handleMouseLeave}>
+        <table className="table-drag-select" onMouseLeave={this.handleMouseLeave} onTouchEnd={this.handleMouseLeave}>
           <thead>
             {this.renderHeader()}
           </thead>
@@ -50,9 +49,9 @@ export default class TableDragSelect extends React.Component {
   renderHeader = () => {
     let header = []
     if (this.props.days[0].length === 3)
-      this.props.days.forEach((day, i) => header.push(<th key = {i}>{day}</th>))
+      this.props.days.forEach((day, i) => header.push(<th key={i}>{day}</th>))
     else {
-      this.props.days.forEach((day, i) => header.push(<th key = {i}>{this.dateHeader(day)}</th>))
+      this.props.days.forEach((day, i) => header.push(<th key={i}>{this.dateHeader(day)}</th>))
     }
     return <tr className="table-header-day">{header}</tr>
   }
@@ -129,12 +128,11 @@ export default class TableDragSelect extends React.Component {
     //console.log("touch moved", e)
     e.preventDefault()
     let { row, column } = eventToCellLocation(e);
-    this.props.setCurrentCoords({row: row, col: column})
-    if(this.state.addMode) this.setState({addMode: false})
+    this.props.setCurrentCoords({ row: row, col: column })
+    if (this.state.addMode === false) this.setState({ addMode: true })
   }
 
   handleMouseLeave = () => {
-    console.log("mouse left")
     this.props.setCurrentCoords(null)
   }
 
@@ -224,7 +222,7 @@ export default class TableDragSelect extends React.Component {
   };
 
   isCellBeingSelectedViewing = (row, column) => {
-     
+
     return (this.props.currentCoords &&
       (row === this.props.currentCoords.row &&
         column === this.props.currentCoords.col)
@@ -238,7 +236,7 @@ class Cell extends React.Component {
   // cells
   shouldComponentUpdate = nextProps =>
     this.props.beingSelected !== nextProps.beingSelected ||
-    this.props.selected !== nextProps.selected || 
+    this.props.selected !== nextProps.selected ||
     this.props.color !== nextProps.color
 
   componentDidMount = () => {
@@ -270,26 +268,32 @@ class Cell extends React.Component {
       ...props
     } = this.props;
 
-    let style = {backgroundColor: color}
+    let style = { backgroundColor: color }
     let selectedColor = "var(--highlight)", deselectedColor = "var(--alert)"
 
-      className += " cell-enabled";
-      if (beingSelected) {
-        if (addMode) style.backgroundColor = "#24d1ce"
-        else style.backgroundColor = deselectedColor
-      }
-      else if (selected) {
-        //className += " cell-selected";
-        style.backgroundColor = selectedColor
-      }
+    className += " cell-enabled";
+    if (beingSelected) {
+      if (addMode) style.backgroundColor = "#24d1ce"
+      else style.backgroundColor = deselectedColor
+    }
+    else if (selected) {
+      //className += " cell-selected";
+      style.backgroundColor = selectedColor
+    }
 
+    let borderColor = "#e1e3e6"
+    /*
+    if (color === "#3a506b") {
+      borderColor = "#f0ed9c"
+      style.border = "1px solid " + borderColor
+    }
+    */
+    if (rowNum % 4 === 0) {
+      style.borderTop = "3px solid " + borderColor
+    }
 
     //console.log("color: ", style)
-
-    if(rowNum % 4 === 0) {
-      style.borderTop = "3px solid #e1e3e6"
-    }
-//e1e3e6
+    //e1e3e6
     return (
       <td
         ref={td => (this.td = td)}
@@ -305,11 +309,11 @@ class Cell extends React.Component {
   };
 
   handleTouchStart = e => {
-      this.props.onTouchStart(e);
+    this.props.onTouchStart(e);
   };
 
   handleTouchMove = e => {
-      this.props.onTouchMove(e);
+    this.props.onTouchMove(e);
   };
 }
 

@@ -32,7 +32,7 @@ export default function GroupAvailable({ numRespondents, people, currentCoords, 
                         <div className="group-header">
                             {available.length} Available
                     </div>
-                        <div className="group-list-container">{available.map(name => <div>{name}</div>)} </div>
+                        <div className="group-list-container">{available.map((name, i) => <div key = {i}>{name}</div>)} </div>
                     </div>
                     <div className="divider">
 
@@ -41,7 +41,7 @@ export default function GroupAvailable({ numRespondents, people, currentCoords, 
                         <div className="group-header">
                             {unavailable.length} Unavailable
                     </div>
-                        <div className="group-list-container">{unavailable.map(name => <div>{name}</div>)} </div>
+                        <div className="group-list-container">{unavailable.map((name, i) => <div key = {i}>{name}</div>)} </div>
                     </div>
                 </div>}
         </div>

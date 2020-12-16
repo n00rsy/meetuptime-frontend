@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function Week({ selectedDays, setSelectedDays }) {
-  const { register, errors } = useForm({
+  const { register } = useForm({
     reValidateMode: 'onChange'
   });
 
