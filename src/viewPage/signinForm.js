@@ -1,6 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { convert1dTo2dArray, subtract2dArrays, map2dArray } from './utils'
+import CONFIG from '../config.json'
 
 export default function SigninForm({ meetingData, setMeetingData, setUserData }) {
 
@@ -13,7 +14,7 @@ export default function SigninForm({ meetingData, setMeetingData, setUserData })
             password: userInfo.password === "" ? null : userInfo.password,
         }
 
-        fetch('/api/people/' + meetingData.id, {
+        fetch(CONFIG.backendApi + '/api/people/' + meetingData.id, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

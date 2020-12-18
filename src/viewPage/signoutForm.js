@@ -1,5 +1,5 @@
 import React from 'react'
-
+import CONFIG from '../config.json'
 export default function SignoutForm({userData, setUserData, getMeeting, meetingId }) {
 
     function signout() {
@@ -15,7 +15,7 @@ export default function SignoutForm({userData, setUserData, getMeeting, meetingI
             password: userData.password === "" ? null : userData.password,
         }
         console.log("sending delete request with: ", data)
-        fetch('/api/people/' + meetingId, {
+        fetch(CONFIG.backendApi + '/api/people/' + meetingId, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

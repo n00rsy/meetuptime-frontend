@@ -28,8 +28,8 @@ export default function Week({ selectedDays, setSelectedDays }) {
 
   return (
     <div className = "days-wrapper" onChange={onChange}>
-      <div className="day-container">
-        <label className="day-label" for="sun">Sun</label>
+      <div className="day-container" style = {{paddingLeft: "0rem"}}>
+        <label className="day-label" for="sun" >Sun</label>
         <input id="sun" className="day" type="checkbox" placeholder="Sunday" name="0" ref={register} />
       </div>
       <div className="day-container">

@@ -4,7 +4,7 @@ import {Navbar, Nav} from 'react-bootstrap'
 export default function NavigationBar() {
 
     return (
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light" expand="lg" style={{zIndex: "10000"}}>
   <Navbar.Brand href="/">whenmeet.io</Navbar.Brand>
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">

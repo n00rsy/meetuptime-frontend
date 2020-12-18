@@ -14,7 +14,7 @@ import CreatePage from './createPage/createPage'
 import ViewPage from './viewPage/viewPage'
 import NavigationBar from './shared/navbar'
 import Footer from './shared/footer'
-
+import Background from './shared/background'
 /*
 <h1>React Router Example</h1>
     <ul role="nav">
@@ -25,15 +25,19 @@ import Footer from './shared/footer'
     </ul>
 */
 
+
 ReactDOM.render(
   <React.StrictMode>
 
     <Router>
       <NavigationBar />
-      <div className="app-wrapper">
-        <Switch>
+      <div className="app-wrapper" >       
+       <Switch>
           <Route exact path="/">
+            <div style = {{zIndex:"1"}}>
+            <Background page="create" />
             <CreatePage />
+            </div>
           </Route>
           <Route path="/about">
             <p>ABOUT PAGE</p>

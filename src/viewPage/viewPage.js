@@ -9,6 +9,7 @@ import SignoutForm from './signoutForm'
 import AvailabilityTable from './available'
 import { convert1dTo2dArray, initialize2dIntArray, add2dArrays, map2dArray } from './utils'
 import loading from '../img/loading.gif'
+import CONFIG from '../config.json'
 
 export default function ViewPage() {
 
@@ -34,18 +35,22 @@ export default function ViewPage() {
     }
 
     function getMeeting(path) {
-        fetch('/api/meetings' + path, {
+        fetch(CONFIG.backendApi + '/api/meetings' + path, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
         })
+            .catch(err => {
+                console.log("fetch falied!!!")
+                return null
+            })
             .then(res => {
                 console.log('raw server response: ', res)
-                return res.status === 404 ? null : res.json()
+                return (!res || res.status === 404) ? null : res.json()
             })
             .then(data => {
-                if (data == null) {
+                if (!data) {
                     setFetchErr(true)
                 }
                 else {
@@ -104,27 +109,11 @@ export default function ViewPage() {
         return (
             <div className="wrapper">
                 <div className="background">
-                    <Background />
                 </div>
                 <div className="loading-wrapper">
                     <h4>Loading Event...</h4>
                     <img src={loading}></img>
                 </div>
-            </div>
-        )
-    }
-    function Background() {
-        if (isMobile) {
-            return (
-                <div style={{ height: "60vh", width: "100%", backgroundColor: "#d1a7a7", overflow: "hidden" }} />
-            )
-        }
-        return (
-            <div style={{ height: "100vh", width: "100%", overflow: "hidden" }} >
-                <svg viewBox="0 0 500 150" preserveAspectRatio="none" style={{ height: "100%", width: "100%" }}>
-                    <path d="M-3.72,74.30 C161.62,106.88 289.16,34.82 524.49,91.07 L500.00,0.00 L0.00,0.00 Z" style={{ stroke: "none", fill: "#d1a7a7" }}>
-                    </path>
-                </svg>
             </div>
         )
     }
@@ -155,11 +144,8 @@ export default function ViewPage() {
 
     return (
         <div className="wrapper">
-            <div className="background">
-                <Background />
-            </div>
             <div className="header-container">
-                <div className = "title-container">
+                <div className="title-container">
                     <h1 >{meetingData.name}</h1>
                     <h2 >{meetingData.description}</h2>
                     <Share />

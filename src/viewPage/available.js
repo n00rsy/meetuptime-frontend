@@ -10,6 +10,7 @@ import Legend from './legend'
 import edit from '../img/edit.png'
 import view from '../img/view.png'
 import './styles.css'
+import CONFIG from '../config.json'
 
 export default function AvailabilityTable({ meetingData, userData, setUserData, getMeeting }) {
 
@@ -35,7 +36,7 @@ export default function AvailabilityTable({ meetingData, userData, setUserData, 
             available: convert2dTo1dArray(userData.available)
         }
         console.log("saving changes!", data, meetingData.id)
-        fetch('/api/people/' + meetingData.id, {
+        fetch(CONFIG.backendApi + '/api/people/' + meetingData.id, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

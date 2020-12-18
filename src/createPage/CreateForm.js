@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useForm } from 'react-hook-form'
 import { useHistory } from "react-router-dom"
 import Moment from 'moment-timezone'
-import { Form } from 'react-bootstrap'
+import { Form, Row, Col } from 'react-bootstrap'
 
 import Calendar from './calendar'
 import Week from './week'
@@ -159,14 +159,14 @@ export default function CreateForm() {
 
                 <div className="error">{(errors.description && errors.description.message) ? errors.description.message : ""}</div>
             </div>
-            <div style = {{display: "flex", justifyContent: "center"}}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
                 <div className="day-selector-container">
                     <div onChange={onChange}>
                         <span style={{ marginRight: "1rem" }}>Survey Using:</span> <input id="dates" name="surveyUsing" type="radio" value="Dates" style={{ marginLeft: "1rem" }} ref={register({ required: true })} />
                         <label for="dates" style={{ marginRight: "1rem" }}>Dates</label>
                         <input id="days" name="surveyUsing" type="radio" value="Days" ref={register({ required: true })} />
                         <label for="days">Days</label>
-                        <div style = {{paddingTop: "1rem", borderBottom: "1px solid white", width: "70%", margin: "auto"}}></div>
+                        <div style={{ paddingTop: "1rem", borderBottom: "1px solid white", width: "70%", margin: "auto" }}></div>
                     </div>
 
                     <TimeSelector />
@@ -182,69 +182,74 @@ export default function CreateForm() {
                 </div>}
 
             <div className="time-container">
-                From <Form.Control className="select" as="select" name="startTime" style={{ maxWidth: "8rem", marginRight: "1rem" }} ref={register({
-                required: true,
-                validate: validateTimeSelections,
-            })}>
-                    <option value="0">midnight</option>
-                    <option value="1"> 1 am</option>
-                    <option value="2"> 2 am</option>
-                    <option value="3"> 3 am</option>
-                    <option value="4"> 4 am</option>
-                    <option value="5"> 5 am</option>
-                    <option value="6"> 6 am</option>
-                    <option value="7"> 7 am</option>
-                    <option value="8"> 8 am</option>
-                    <option value="9"> 9 am</option>
-                    <option value="10"> 10 am</option>
-                    <option value="11"> 11 am</option>
-                    <option value="12"> noon</option>
-                    <option value="13"> 1 pm</option>
-                    <option value="14"> 2 pm</option>
-                    <option value="15"> 3 pm</option>
-                    <option value="16"> 4 pm</option>
-                    <option value="17"> 5 pm</option>
-                    <option value="18"> 6 pm</option>
-                    <option value="19"> 7 pm</option>
-                    <option value="20"> 8 pm</option>
-                    <option value="21"> 9 pm</option>
-                    <option value="22"> 10 pm</option>
-                    <option value="23"> 11 pm</option>
-                    <option value="0"> midnight</option>
-                </Form.Control>
+                <span className="time-select-container">
+                    <span style = {{whiteSpace:"nowrap"}}>From <Form.Control className="select" as="select" name="startTime" style={{ maxWidth: "7rem", marginRight: "1rem", display: "inline", marginTop: "0.5rem" }} ref={register({
+                        required: true,
+                        validate: validateTimeSelections,
+                    })}>
+                        <option value="0">midnight</option>
+                        <option value="1"> 1 am</option>
+                        <option value="2"> 2 am</option>
+                        <option value="3"> 3 am</option>
+                        <option value="4"> 4 am</option>
+                        <option value="5"> 5 am</option>
+                        <option value="6"> 6 am</option>
+                        <option value="7"> 7 am</option>
+                        <option value="8"> 8 am</option>
+                        <option value="9"> 9 am</option>
+                        <option value="10"> 10 am</option>
+                        <option value="11"> 11 am</option>
+                        <option value="12"> noon</option>
+                        <option value="13"> 1 pm</option>
+                        <option value="14"> 2 pm</option>
+                        <option value="15"> 3 pm</option>
+                        <option value="16"> 4 pm</option>
+                        <option value="17"> 5 pm</option>
+                        <option value="18"> 6 pm</option>
+                        <option value="19"> 7 pm</option>
+                        <option value="20"> 8 pm</option>
+                        <option value="21"> 9 pm</option>
+                        <option value="22"> 10 pm</option>
+                        <option value="23"> 11 pm</option>
+                        <option value="0"> midnight</option>
+                    </Form.Control>
+                    </span>
+                </span>
 
-                To <Form.Control as="select" name="endTime" className="select" style={{ maxWidth: "8rem" }} ref={register({
-                    required: true,
-                    validate: validateTimeSelections,
-                })}>
+                <span className="time-select-container">
+                    <span style = {{whiteSpace:"nowrap"}}>To <Form.Control as="select" id="endTime" name="endTime" className="select" style={{ maxWidth: "7rem", display: "inline",  marginTop: "0.5rem" }} ref={register({
+                        required: true,
+                        validate: validateTimeSelections,
+                    })}>
 
-                    <option value="0">midnight</option>
-                    <option value="1"> 1 am</option>
-                    <option value="2"> 2 am</option>
-                    <option value="3"> 3 am</option>
-                    <option value="4"> 4 am</option>
-                    <option value="5"> 5 am</option>
-                    <option value="6"> 6 am</option>
-                    <option value="7"> 7 am</option>
-                    <option value="8"> 8 am</option>
-                    <option value="9"> 9 am</option>
-                    <option value="10"> 10 am</option>
-                    <option value="11"> 11 am</option>
-                    <option value="12"> noon</option>
-                    <option value="13"> 1 pm</option>
-                    <option value="14"> 2 pm</option>
-                    <option value="15"> 3 pm</option>
-                    <option value="16"> 4 pm</option>
-                    <option value="17"> 5 pm</option>
-                    <option value="18"> 6 pm</option>
-                    <option value="19"> 7 pm</option>
-                    <option value="20"> 8 pm</option>
-                    <option value="21"> 9 pm</option>
-                    <option value="22"> 10 pm</option>
-                    <option value="23"> 11 pm</option>
-                    <option value="0"> midnight</option>
-                </Form.Control>
-
+                        <option value="0">midnight</option>
+                        <option value="1"> 1 am</option>
+                        <option value="2"> 2 am</option>
+                        <option value="3"> 3 am</option>
+                        <option value="4"> 4 am</option>
+                        <option value="5"> 5 am</option>
+                        <option value="6"> 6 am</option>
+                        <option value="7"> 7 am</option>
+                        <option value="8"> 8 am</option>
+                        <option value="9"> 9 am</option>
+                        <option value="10"> 10 am</option>
+                        <option value="11"> 11 am</option>
+                        <option value="12"> noon</option>
+                        <option value="13"> 1 pm</option>
+                        <option value="14"> 2 pm</option>
+                        <option value="15"> 3 pm</option>
+                        <option value="16"> 4 pm</option>
+                        <option value="17"> 5 pm</option>
+                        <option value="18"> 6 pm</option>
+                        <option value="19"> 7 pm</option>
+                        <option value="20"> 8 pm</option>
+                        <option value="21"> 9 pm</option>
+                        <option value="22"> 10 pm</option>
+                        <option value="23"> 11 pm</option>
+                        <option value="0"> midnight</option>
+                    </Form.Control>
+                    </span>
+                </span>
                 <div className="error">{
                     ((errors.endTime && errors.endTime.type === "validate") ||
                         (errors.startTime && errors.startTime.type === "validate")) ?
