@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/meetuptime-frontend/static/css/main.5955a346.chunk.css",
+    "main.js": "/meetuptime-frontend/static/js/main.a7aa5937.chunk.js",
+    "main.js.map": "/meetuptime-frontend/static/js/main.a7aa5937.chunk.js.map",
+    "runtime-main.js": "/meetuptime-frontend/static/js/runtime-main.64f6c6e5.js",
+    "runtime-main.js.map": "/meetuptime-frontend/static/js/runtime-main.64f6c6e5.js.map",
+    "static/css/2.1a02f21c.chunk.css": "/meetuptime-frontend/static/css/2.1a02f21c.chunk.css",
+    "static/js/2.0050c9d8.chunk.js": "/meetuptime-frontend/static/js/2.0050c9d8.chunk.js",
+    "static/js/2.0050c9d8.chunk.js.map": "/meetuptime-frontend/static/js/2.0050c9d8.chunk.js.map",
+    "static/js/3.467ab816.chunk.js": "/meetuptime-frontend/static/js/3.467ab816.chunk.js",
+    "static/js/3.467ab816.chunk.js.map": "/meetuptime-frontend/static/js/3.467ab816.chunk.js.map",
+    "index.html": "/meetuptime-frontend/index.html",
+    "static/css/2.1a02f21c.chunk.css.map": "/meetuptime-frontend/static/css/2.1a02f21c.chunk.css.map",
+    "static/css/main.5955a346.chunk.css.map": "/meetuptime-frontend/static/css/main.5955a346.chunk.css.map",
+    "static/js/2.0050c9d8.chunk.js.LICENSE.txt": "/meetuptime-frontend/static/js/2.0050c9d8.chunk.js.LICENSE.txt",
+    "static/media/edit.51bb6b37.png": "/meetuptime-frontend/static/media/edit.51bb6b37.png",
+    "static/media/loading.4529fddf.gif": "/meetuptime-frontend/static/media/loading.4529fddf.gif",
+    "static/media/view.c19b9e35.png": "/meetuptime-frontend/static/media/view.c19b9e35.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.64f6c6e5.js",
+    "static/css/2.1a02f21c.chunk.css",
+    "static/js/2.0050c9d8.chunk.js",
+    "static/css/main.5955a346.chunk.css",
+    "static/js/main.a7aa5937.chunk.js"
+  ]
+}
