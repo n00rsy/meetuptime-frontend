@@ -19,13 +19,13 @@ export function ViewBackground() {
 export function CreateBackground() {
     if (isMobile) {
       return (
-        <div style={{ height: "65vh", width: "100%", backgroundColor: "white", overflow: "hidden" }} />
+        <div style={{ height: "30rem", width: "100%", backgroundColor: "white", overflow: "hidden" }} />
       )
     }
 
     console.log("returning background")
     return (
-        <svg viewBox="0 0 500 150" preserveAspectRatio="xMidYMid slice" style={{ height: "200%", width: "100%" }}>
+        <svg viewBox="0 0 500 150" preserveAspectRatio="xMidYMid slice" style={{ height: "40rem", width: "100%"}}>
           <path d="M-33.07,4.25 C171.78,273.65 396.39,-137.85 604.06,176.94 L500.00,0.00 L0.00,0.00 Z" style={{ stroke: "none", fill: "white" }}>
           </path>
         </svg>

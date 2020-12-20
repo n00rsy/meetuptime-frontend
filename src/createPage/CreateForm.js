@@ -80,11 +80,12 @@ export default function CreateForm() {
                 return res.json()
             })
             .catch(() => {
+                setLoading(false)
                 setDaySelectionError("Unable to create event :( Please try again later.")
             })
             .then(data => {
                 console.log(data);
-
+                setLoading(false)
                 if (data && data.code) history.push("/" + data.code)
                 else setDaySelectionError("Unable to create event :( Please try again later.")
             })
