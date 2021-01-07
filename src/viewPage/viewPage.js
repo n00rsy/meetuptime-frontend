@@ -8,7 +8,7 @@ import SigninForm from './signinForm'
 import SignoutForm from './signoutForm'
 import AvailabilityTable from './available'
 import { convert1dTo2dArray, initialize2dIntArray, add2dArrays, map2dArray } from './utils'
-import loading from '../img/loading.gif'
+import copy from '../img/copy.png'
 import CONFIG from '../config.json'
 
 export default function ViewPage() {
@@ -23,13 +23,14 @@ export default function ViewPage() {
     const history = useHistory()
 
     function handlePath() {
+        document.getElementsByClassName('app-wrapper')[0].style.backgroundColor = 'white'
         console.log("handling path!!!")
         let path = location.pathname
         if (path.length === 9) {
             getMeeting(path)
         }
         else {
-            console.log("invalid path")
+            console.log("invalid path", path)
             setFetchErr(true)
         }
     }
@@ -111,8 +112,7 @@ export default function ViewPage() {
                 <div className="background">
                 </div>
                 <div className="loading-wrapper">
-                    <h4>Loading Event...</h4>
-                    <img src={loading}></img>
+                    <h4 style = {{color: "white"}}>Loading Event...</h4>
                 </div>
             </div>
         )
@@ -134,10 +134,9 @@ export default function ViewPage() {
     function Share() {
         return (
             <div>
-                <h6 style={{ fontWeight: "normal" }}>
-                    Event Link: <span onClick={shareMeeting} className={"share"}>{"whenmeet.io/" + meetingData.code}</span>
+                <h6 style={{ fontWeight: "normal"}}>
+                    Event Link: <span style = {{opacity: copied ? "0.65" : "1" }} onClick={shareMeeting} className={"share"}>{"whenmeet.io/" + meetingData.code} <img style={{height:"1rem",marginBottom:"0.3rem"}} src={copy}></img></span>
                 </h6>
-                <div style={{ opacity: copied ? "1" : "0", marginTop: "1rem", paddingBottom: "1rem", fontWeight: "bold", fontStyle: "italic" }}>Link Copied!</div>
             </div>
         )
     }

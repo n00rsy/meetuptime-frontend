@@ -56,7 +56,7 @@ export default function SigninForm({ meetingData, setMeetingData, setUserData })
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <p style = {{width: "25rem"}}>New to this event? Make up a name and password. Returning? Use the same name/ password.</p>
+            <p style = {{maxWidth: "400px", textAlign: "center", margin: "0 auto", paddingBottom: "1rem"}}>New to this event? Make up a name and password. Returning? Use the same name/ password.</p>
             <input type="text" placeholder="Name" name="username" ref={register({ 
                 required: {
                     value: true,

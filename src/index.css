@@ -5,7 +5,7 @@
   --third: #1C2541;
   --highlight: #5BC0BE;
   --alert: #bf6068;
-  --bg: #b8a9a0;
+  --bg: #46648f;
 }
 a {
   color : var(--highlight)

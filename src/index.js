@@ -15,15 +15,9 @@ import ViewPage from './viewPage/viewPage'
 import NavigationBar from './shared/navbar'
 import Footer from './shared/footer'
 import Background from './shared/background'
-/*
-<h1>React Router Example</h1>
-    <ul role="nav">
-    <li><Link to="/">Home</Link></li>
-      <li><Link to="/about">About</Link></li>
-      <li><Link to="/howto">How To</Link></li>
-      <li><Link to="/faq">FAQ</Link></li>
-    </ul>
-*/
+import HowTo from './staticPages/howto'
+import About from './staticPages/about'
+import Faq from './staticPages/faq'
 
 
 ReactDOM.render(
@@ -31,25 +25,37 @@ ReactDOM.render(
 
     <Router>
       <NavigationBar />
-      <div className="app-wrapper" >       
-       <Switch>
+      <div className="app-wrapper" >
+        <Switch>
           <Route exact path="/">
-            <div style = {{zIndex:"1"}}>
-            <Background page="create" />
-            <CreatePage />
+            <div style={{ zIndex: "1" }}>
+              <Background page="create" />
+              <CreatePage />
             </div>
           </Route>
           <Route path="/about">
-            <p>ABOUT PAGE</p>
+          <div style={{ zIndex: "1" }}>
+              <Background page="static" />
+              <About />
+            </div>
           </Route>
           <Route path="/howto">
-            <p>HOW TO</p>
+          <div style={{ zIndex: "1" }}>
+              <Background page="static" />
+              <HowTo />
+            </div>
           </Route>
           <Route path="/faq">
-            <p>FAQ</p>
+          <div style={{ zIndex: "1" }}>
+              <Background page="static" />
+              <Faq />
+            </div>
           </Route>
           <Route>
-            <ViewPage />
+            <div style={{ zIndex: "1" }}>
+              <Background page="view" />
+              <ViewPage />
+            </div>
           </Route>
         </Switch>
         <Footer />
