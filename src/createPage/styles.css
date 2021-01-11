@@ -71,17 +71,16 @@
     position: relative;
     transition: 0.3s;
 }
-
-.day:hover {
-    background-color: #c5d3e3;
+@media (hover: hover) {
+    .day:hover {
+        background-color: #c5d3e3;
+    }
+    .day:checked:hover {
+        background-color: #86dbda;
+    }
 }
-
 .day:checked, .day:active, .day:checked:active {
     background-color: var(--highlight);
-}
-
-.day:checked:hover {
-    background-color: #86dbda;
 }
 
 .time-select-container {

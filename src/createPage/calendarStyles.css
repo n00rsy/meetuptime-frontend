@@ -176,16 +176,16 @@
     background-color: var(--highlight);
     color: #F0F8FF;
   }
-  
-  .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover {
-    background-color: #86dbda;
-  }
-  
-  .DayPicker:not(.DayPicker--interactionDisabled)
-    .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
-    background-color: #5f7999;
-  }
-  
+  @media (hover: hover) {
+    .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover {
+      background-color: #86dbda;
+    }
+    
+    .DayPicker:not(.DayPicker--interactionDisabled)
+      .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+      background-color: #5f7999;
+    }
+}
   /* DayPickerInput */
   
   .DayPickerInput {

@@ -10,7 +10,7 @@ export default function Faq() {
     function Body() {
         return (
             <div>
-                <p className = "header_p"> Got questions? We have answers.</p>
+                <p className = "header" style = {{textAlign:"center"}}> Got questions? We have answers.</p>
                 <p style={{ fontWeight: "bold" }}>1. How long are meeting links active?</p>
                 <p>Meetings using days of the week are active for 30 days, while meetings using specific dates are active until 1 week after their end date.</p>
                 <p style={{ fontWeight: "bold" }}>2. Is there a limit to how many people can respond to my poll?</p>

@@ -6,6 +6,7 @@ import { Form, Row, Col } from 'react-bootstrap'
 
 import Calendar from './calendar'
 import Week from './week'
+import Spinner from '../shared/spinner'
 import CONFIG from '../config.json'
 
 let timezones = Moment.tz.names()
@@ -64,6 +65,7 @@ export default function CreateForm() {
             setShowCal(false)
         }
     }
+
     function sendMeeting(meeting) {
         console.log("sending post request with: ", meeting)
         setLoading(true)
@@ -184,7 +186,7 @@ export default function CreateForm() {
 
             <div className="time-container">
                 <span className="time-select-container">
-                    <span style = {{whiteSpace:"nowrap"}}>From <Form.Control className="select" as="select" name="startTime" style={{ maxWidth: "7rem", marginRight: "1rem", display: "inline", marginTop: "0.5rem" }} ref={register({
+                    <span style={{ whiteSpace: "nowrap" }}>From <Form.Control className="select" as="select" name="startTime" style={{ maxWidth: "7rem", marginRight: "1rem", display: "inline", marginTop: "0.5rem" }} ref={register({
                         required: true,
                         validate: validateTimeSelections,
                     })}>
@@ -218,7 +220,7 @@ export default function CreateForm() {
                 </span>
 
                 <span className="time-select-container">
-                    <span style = {{whiteSpace:"nowrap"}}>To <Form.Control as="select" id="endTime" name="endTime" className="select" style={{ maxWidth: "7rem", display: "inline",  marginTop: "0.5rem" }} ref={register({
+                    <span style={{ whiteSpace: "nowrap" }}>To <Form.Control as="select" id="endTime" name="endTime" className="select" style={{ maxWidth: "7rem", display: "inline", marginTop: "0.5rem" }} ref={register({
                         required: true,
                         validate: validateTimeSelections,
                     })}>
@@ -257,7 +259,11 @@ export default function CreateForm() {
                         "Start time must be before end time!" : ""}</div>
 
             </div>
-            <input className="button-important" type="submit" value={loading ? "CREATING EVENT!!!" : "Create Event"} />
+            {loading ?
+                <Spinner />
+                :
+                <input className="button-important" type="submit" value={"Create Event"} />
+            }
         </form>
     );
 }

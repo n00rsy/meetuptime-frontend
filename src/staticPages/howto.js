@@ -12,7 +12,7 @@ export default function HowTo() {
             <div>
                 <p className = "header_p">PlanPoll is a tool for you to make polls to figure out the best time for meetings to happen.🤝</p>
                 <h2 className = "header">1. Create 🏗️</h2>
-                <p>Head over to the PlanPoll homepage, where you can create a new event poll. After creating an event, you’ll be given a unique link to your poll that you can share with your group.</p>
+                <p>Head over to the PlanPoll <a href = "/">homepage</a>, where you can create a new event poll. After creating an event, you’ll be given a unique link to your poll that you can share with your group.</p>
                 <h2 className = "header">2. Poll ✏️</h2>
                 <p>Share your link with event attendees! Anyone with the link can sign in and fill out a response.</p>
                 <h2 className = "header">3. Meet 📅</h2>

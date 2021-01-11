@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { Form } from 'react-bootstrap'
-import { isMobile } from "react-device-detect";
 import Moment from 'moment-timezone'
+import { isMobile } from 'react-device-detect'
+
 
 import SigninForm from './signinForm'
 import SignoutForm from './signoutForm'
 import AvailabilityTable from './available'
 import { convert1dTo2dArray, initialize2dIntArray, add2dArrays, map2dArray } from './utils'
 import copy from '../img/copy.png'
+import Spinner from '../shared/spinner'
 import CONFIG from '../config.json'
 
 export default function ViewPage() {
@@ -113,6 +115,7 @@ export default function ViewPage() {
                 </div>
                 <div className="loading-wrapper">
                     <h4 style = {{color: "white"}}>Loading Event...</h4>
+                    <Spinner />
                 </div>
             </div>
         )
@@ -120,22 +123,23 @@ export default function ViewPage() {
 
     function shareMeeting() {
         let shareData = {
-            url: "https://whenmeet.io/" + meetingData.code,
+            url: "https://planpoll.com/" + meetingData.code,
             title: meetingData.name
         }
         console.log("sharing meeting", shareData)
-        navigator.clipboard.writeText(shareData.url).then(function () {
-            setCopied(true)
-        }, function () {
-
-        });
+        if(isMobile) {
+            navigator.share(shareData).then(() => setCopied(true))
+        }
+        else {
+            navigator.clipboard.writeText(shareData.url).then(() => setCopied(true))
+        }
     }
 
     function Share() {
         return (
             <div>
                 <h6 style={{ fontWeight: "normal"}}>
-                    Event Link: <span style = {{opacity: copied ? "0.65" : "1" }} onClick={shareMeeting} className={"share"}>{"whenmeet.io/" + meetingData.code} <img style={{height:"1rem",marginBottom:"0.3rem"}} src={copy}></img></span>
+                    Event Link: <span style = {{opacity: copied ? "0.65" : "1" }} onClick={shareMeeting} className={"share"}>{"planpoll.com/" + meetingData.code} <img style={{height:"1rem",marginBottom:"0.3rem"}} src={copy}></img></span>
                 </h6>
             </div>
         )

@@ -96,6 +96,7 @@ input[type="radio"] {
 
 .button-secondary {
   background-color: var(--alert);
+  text-decoration: none;
   border: none;
   color: white;
   padding: 0rem 1rem;
@@ -109,10 +110,14 @@ input[type="radio"] {
 }
 .button-secondary:hover {
   background-color: #c76f77;
+  color: white;
+  text-decoration: none;
 }
 
 .button-secondary:active {
   background-color: #8a6669;
+  color: white;
+  text-decoration: none;
 }
 
 [type="radio"]:checked,

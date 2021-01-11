@@ -6,7 +6,7 @@ import MemoizedTimeTable from "./timeTable"
 import { convert2dTo1dArray } from './utils'
 import GroupAvailable from './groupAvailable'
 import Legend from './legend'
-
+import Spinner from '../shared/spinner'
 import edit from '../img/edit.png'
 import view from '../img/view.png'
 import './styles.css'
@@ -91,12 +91,12 @@ export default function AvailabilityTable({ meetingData, userData, setUserData, 
             <Container fluid>
                 <Row>
                     <Col>
-                        {meetingData.numRespondents > 0 && <Legend numRespondents={meetingData.numRespondents} />}
+                        <Legend numRespondents={meetingData.numRespondents} />
                     </Col>
                     <Col>
-                    <ToggleButton />
+                        <ToggleButton />
                         <div className="container">
-                            <MemoizedTimeTable startingMoment={startingMoment} numTimeslots={meetingData.numTimeslots} surveyUsing={meetingData.surveyUsing} ToggleButton = {ToggleButton} />
+                            <MemoizedTimeTable startingMoment={startingMoment} numTimeslots={meetingData.numTimeslots} surveyUsing={meetingData.surveyUsing} ToggleButton={ToggleButton} />
                             <TableDragSelect
                                 value={userData === null ? null : userData.available}
                                 onChange={handleChange}
@@ -109,7 +109,12 @@ export default function AvailabilityTable({ meetingData, userData, setUserData, 
                             </TableDragSelect>
 
                         </div>
-                        {userData && <button style={{ marginTop: "2rem" }} className="button-important" value="Save" onClick={save}>{saving ? "SAVING..." : " Save Response"}</button>}
+                        {userData &&
+                            <div>
+                                {!saving ? <button style={{ marginTop: "2rem" }} className="button-important" value="Save" onClick={save}>{" Save Response"}</button>
+                                    :
+                                    <Spinner />}
+                            </div>}
                     </Col>
                     <Col>
                         <GroupAvailable
